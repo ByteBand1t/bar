@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Order } from "@/types/cocktail";
 
@@ -15,47 +15,60 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Abgebrochen",
 };
 
-const POLL_INTERVAL = 5000;
-
 export default function StatusPage() {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const fetchOrder = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/orders/${id}`);
-      if (res.status === 404) {
-        setError("Bestellung nicht gefunden.");
-        return;
-      }
-      if (!res.ok) {
-        setError("Fehler beim Laden der Bestellung.");
-        return;
-      }
-      const data: Order = await res.json();
-      setOrder(data);
-      setError(null);
-    } catch {
-      setError("Verbindungsfehler – bitte nochmal versuchen.");
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
+  const prevStatusRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchOrder();
-    const interval = setInterval(fetchOrder, POLL_INTERVAL);
-    return () => clearInterval(interval);
-  }, [fetchOrder]);
+    const es = new EventSource(`/api/orders/${id}/stream`);
+
+    const handleOrder = (data: Order) => {
+      setOrder(data);
+      setLoading(false);
+      setError(null);
+
+      if (prevStatusRef.current !== null && prevStatusRef.current !== data.status) {
+        if (data.status === "ready") {
+          try { navigator.vibrate([200, 100, 200]); } catch {}
+          if (Notification.permission === "granted") {
+            new Notification("Dein Drink ist fertig! 🍹", {
+              body: "Komm zur Bar und hol ihn ab!",
+            });
+          }
+        }
+      }
+      prevStatusRef.current = data.status;
+    };
+
+    es.addEventListener("order.current", (e: MessageEvent) => {
+      handleOrder(JSON.parse(e.data));
+    });
+
+    const eventTypes = ["order.created", "order.updated", "order.cancelled", "order.completed"];
+    eventTypes.forEach((type) => {
+      es.addEventListener(type, (e: MessageEvent) => {
+        handleOrder(JSON.parse(e.data));
+      });
+    });
+
+    es.onerror = () => {
+      setLoading((prev) => {
+        if (prev) setError("Verbindungsfehler – bitte Seite neu laden.");
+        return false;
+      });
+    };
+
+    return () => es.close();
+  }, [id]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-dvh">
         <div className="text-center text-purple-400">
-          <RefreshCw size={32} className="mx-auto mb-2 animate-spin" />
+          <div className="w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
           <p>Lade Bestellung...</p>
         </div>
       </div>
@@ -91,22 +104,22 @@ export default function StatusPage() {
             <ArrowLeft size={20} />
           </Link>
           <h1 className="text-lg font-bold text-amber-300">Bestellstatus</h1>
+          <div className="ml-auto flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs text-purple-400">Live</span>
+          </div>
         </div>
       </header>
 
       <main className="max-w-2xl mx-auto w-full px-4 pb-8">
-        {/* Ready state – big highlight */}
         {isReady && (
           <div className="mt-4 rounded-2xl bg-emerald-900/30 border border-emerald-600 p-6 text-center">
             <div className="text-5xl mb-3">🍹</div>
-            <h2 className="text-xl font-bold text-emerald-300">
-              Dein Getränk ist fertig!
-            </h2>
+            <h2 className="text-xl font-bold text-emerald-300">Dein Getränk ist fertig!</h2>
             <p className="text-emerald-200 mt-2">Komm zur Bar und hol es ab!</p>
           </div>
         )}
 
-        {/* Cancelled state */}
         {isCancelled && (
           <div className="mt-4 rounded-2xl bg-red-900/30 border border-red-700 p-5">
             <h2 className="text-lg font-bold text-red-300 mb-1">Bestellung abgebrochen</h2>
@@ -118,9 +131,10 @@ export default function StatusPage() {
           </div>
         )}
 
-        {/* Status card */}
         <div
-          className={`mt-4 bg-[#1a1030] rounded-2xl border p-5 ${isReady ? "border-emerald-700" : isCancelled ? "border-red-800" : "border-purple-800/50"}`}
+          className={`mt-4 bg-[#1a1030] rounded-2xl border p-5 ${
+            isReady ? "border-emerald-700" : isCancelled ? "border-red-800" : "border-purple-800/50"
+          }`}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -141,7 +155,6 @@ export default function StatusPage() {
             </div>
           )}
 
-          {/* Items */}
           <h3 className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">
             Bestellte Getränke
           </h3>
@@ -160,21 +173,17 @@ export default function StatusPage() {
             </div>
           )}
 
-          <div className="mt-3 pt-3 border-t border-purple-800/50 flex items-center justify-between">
+          <div className="mt-3 pt-3 border-t border-purple-800/50">
             <p className="text-xs text-purple-500">
               {new Date(order.createdAt).toLocaleTimeString("de-DE", {
                 hour: "2-digit",
                 minute: "2-digit",
-              })} Uhr
+              })}{" "}
+              Uhr
             </p>
-            <span className="text-xs text-purple-600 flex items-center gap-1">
-              <RefreshCw size={10} />
-              Aktualisiert alle 5 Sek.
-            </span>
           </div>
         </div>
 
-        {/* New order CTA */}
         <div className="mt-6 text-center">
           <Link href="/" className="text-amber-400 hover:text-amber-300 font-medium underline">
             Noch ein Drink bestellen →
@@ -200,15 +209,13 @@ function StatusProgress({ status }: { status: string }) {
       {steps.map((step, i) => (
         <div key={step.key} className="flex items-center flex-1">
           <div
-            className={`h-1.5 flex-1 rounded-full transition-colors ${i <= currentIdx ? "bg-amber-500" : "bg-purple-900"}`}
+            className={`h-1.5 flex-1 rounded-full ${i <= currentIdx ? "bg-amber-500" : "bg-purple-900"}`}
           />
           <div className="text-center">
             <div
               className={`mx-1 w-2.5 h-2.5 rounded-full ${i <= currentIdx ? "bg-amber-400" : "bg-purple-800"}`}
             />
-            <p
-              className={`text-[10px] mt-0.5 ${i <= currentIdx ? "text-amber-300" : "text-purple-600"}`}
-            >
+            <p className={`text-[10px] mt-0.5 ${i <= currentIdx ? "text-amber-300" : "text-purple-600"}`}>
               {step.label}
             </p>
           </div>
