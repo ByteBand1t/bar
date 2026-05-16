@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Cocktail {
+  id            String      @id @default(cuid())
+  name          String
+  description   String
+  imageFilename String?
+  category      String
+  isAlcoholFree Boolean     @default(false)
+  isAvailable   Boolean     @default(true)
+  ingredients   Json
+  steps         Json
+  prepTimeMin   Int?
+  sortOrder     Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+}
+
+model Order {
+  id           String       @id @default(cuid())
+  guestName    String
+  guestTag     String?
+  status       String       @default("new")
+  cancelReason String?
+  notes        String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  completedAt  DateTime?
+  items        OrderItem[]
+  events       OrderEvent[]
+
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  cocktailId String
+  quantity   Int      @default(1)
+  itemNote   String?
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  action    String
+  fromState String?
+  toState   String?
+  actor     String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
