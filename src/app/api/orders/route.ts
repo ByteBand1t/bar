@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { CreateOrderSchema } from "@/lib/validations";
+import { eventBus } from "@/lib/event-bus";
+import type { OrderWithDetails } from "@/lib/event-bus";
 
 function getIp(req: NextRequest): string {
   return (
@@ -57,6 +59,7 @@ export async function POST(req: NextRequest) {
             })),
           },
         },
+        include: { items: { include: { cocktail: true } } },
       });
 
       await tx.orderEvent.create({
@@ -71,6 +74,7 @@ export async function POST(req: NextRequest) {
       return created;
     });
 
+    eventBus.publish("order.created", order as OrderWithDetails);
     console.info(JSON.stringify({ event: "order_created", orderId: order.id, ip }));
     return NextResponse.json({ id: order.id }, { status: 201 });
   } catch (err) {
