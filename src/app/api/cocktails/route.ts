@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export async function GET() {
   try {
     const cocktails = await db.cocktail.findMany({
-      where: { isAvailable: true },
+      where: { isAvailable: true, isArchived: false },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
     });
     return NextResponse.json(cocktails);
