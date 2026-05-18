@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Volume2, VolumeX, History, RefreshCw } from "lucide-react";
+import { Volume2, VolumeX, History, RefreshCw, Settings } from "lucide-react";
 import { useBarStream } from "@/hooks/use-bar-stream";
 import { OrderCard } from "@/components/bar/order-card";
 import { HistoryDrawer } from "@/components/bar/history-drawer";
@@ -13,6 +13,7 @@ import {
   setVolume,
 } from "@/lib/sound";
 import type { OrderWithDetails } from "@/lib/event-bus";
+import { LogoutButton } from "@/components/bar/logout-button";
 import {
   Tooltip,
   TooltipProvider,
@@ -292,6 +293,16 @@ export function BarDashboard() {
               <History size={16} />
               <span className="hidden sm:inline">Verlauf</span>
             </button>
+
+            <a
+              href="/admin"
+              className="p-1.5 rounded-lg text-purple-400 hover:text-white hover:bg-purple-800/30 transition-colors"
+              title="Admin"
+            >
+              <Settings size={18} />
+            </a>
+
+            <LogoutButton />
           </div>
         </header>
 
