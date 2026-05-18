@@ -27,11 +27,15 @@ export type AggregateCocktail = {
 }
 
 export type CocktailAvgAggregateOutputType = {
+  imageWidth: number | null
+  imageHeight: number | null
   prepTimeMin: number | null
   sortOrder: number | null
 }
 
 export type CocktailSumAggregateOutputType = {
+  imageWidth: number | null
+  imageHeight: number | null
   prepTimeMin: number | null
   sortOrder: number | null
 }
@@ -41,9 +45,12 @@ export type CocktailMinAggregateOutputType = {
   name: string | null
   description: string | null
   imageFilename: string | null
+  imageWidth: number | null
+  imageHeight: number | null
   category: string | null
   isAlcoholFree: boolean | null
   isAvailable: boolean | null
+  isArchived: boolean | null
   prepTimeMin: number | null
   sortOrder: number | null
   createdAt: Date | null
@@ -55,9 +62,12 @@ export type CocktailMaxAggregateOutputType = {
   name: string | null
   description: string | null
   imageFilename: string | null
+  imageWidth: number | null
+  imageHeight: number | null
   category: string | null
   isAlcoholFree: boolean | null
   isAvailable: boolean | null
+  isArchived: boolean | null
   prepTimeMin: number | null
   sortOrder: number | null
   createdAt: Date | null
@@ -69,9 +79,12 @@ export type CocktailCountAggregateOutputType = {
   name: number
   description: number
   imageFilename: number
+  imageWidth: number
+  imageHeight: number
   category: number
   isAlcoholFree: number
   isAvailable: number
+  isArchived: number
   ingredients: number
   steps: number
   prepTimeMin: number
@@ -83,11 +96,15 @@ export type CocktailCountAggregateOutputType = {
 
 
 export type CocktailAvgAggregateInputType = {
+  imageWidth?: true
+  imageHeight?: true
   prepTimeMin?: true
   sortOrder?: true
 }
 
 export type CocktailSumAggregateInputType = {
+  imageWidth?: true
+  imageHeight?: true
   prepTimeMin?: true
   sortOrder?: true
 }
@@ -97,9 +114,12 @@ export type CocktailMinAggregateInputType = {
   name?: true
   description?: true
   imageFilename?: true
+  imageWidth?: true
+  imageHeight?: true
   category?: true
   isAlcoholFree?: true
   isAvailable?: true
+  isArchived?: true
   prepTimeMin?: true
   sortOrder?: true
   createdAt?: true
@@ -111,9 +131,12 @@ export type CocktailMaxAggregateInputType = {
   name?: true
   description?: true
   imageFilename?: true
+  imageWidth?: true
+  imageHeight?: true
   category?: true
   isAlcoholFree?: true
   isAvailable?: true
+  isArchived?: true
   prepTimeMin?: true
   sortOrder?: true
   createdAt?: true
@@ -125,9 +148,12 @@ export type CocktailCountAggregateInputType = {
   name?: true
   description?: true
   imageFilename?: true
+  imageWidth?: true
+  imageHeight?: true
   category?: true
   isAlcoholFree?: true
   isAvailable?: true
+  isArchived?: true
   ingredients?: true
   steps?: true
   prepTimeMin?: true
@@ -228,9 +254,12 @@ export type CocktailGroupByOutputType = {
   name: string
   description: string
   imageFilename: string | null
+  imageWidth: number | null
+  imageHeight: number | null
   category: string
   isAlcoholFree: boolean
   isAvailable: boolean
+  isArchived: boolean
   ingredients: runtime.JsonValue
   steps: runtime.JsonValue
   prepTimeMin: number | null
@@ -267,9 +296,12 @@ export type CocktailWhereInput = {
   name?: Prisma.StringFilter<"Cocktail"> | string
   description?: Prisma.StringFilter<"Cocktail"> | string
   imageFilename?: Prisma.StringNullableFilter<"Cocktail"> | string | null
+  imageWidth?: Prisma.IntNullableFilter<"Cocktail"> | number | null
+  imageHeight?: Prisma.IntNullableFilter<"Cocktail"> | number | null
   category?: Prisma.StringFilter<"Cocktail"> | string
   isAlcoholFree?: Prisma.BoolFilter<"Cocktail"> | boolean
   isAvailable?: Prisma.BoolFilter<"Cocktail"> | boolean
+  isArchived?: Prisma.BoolFilter<"Cocktail"> | boolean
   ingredients?: Prisma.JsonFilter<"Cocktail">
   steps?: Prisma.JsonFilter<"Cocktail">
   prepTimeMin?: Prisma.IntNullableFilter<"Cocktail"> | number | null
@@ -284,9 +316,12 @@ export type CocktailOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageFilename?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageWidth?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageHeight?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   isAlcoholFree?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   ingredients?: Prisma.SortOrder
   steps?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,9 +339,12 @@ export type CocktailWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Cocktail"> | string
   description?: Prisma.StringFilter<"Cocktail"> | string
   imageFilename?: Prisma.StringNullableFilter<"Cocktail"> | string | null
+  imageWidth?: Prisma.IntNullableFilter<"Cocktail"> | number | null
+  imageHeight?: Prisma.IntNullableFilter<"Cocktail"> | number | null
   category?: Prisma.StringFilter<"Cocktail"> | string
   isAlcoholFree?: Prisma.BoolFilter<"Cocktail"> | boolean
   isAvailable?: Prisma.BoolFilter<"Cocktail"> | boolean
+  isArchived?: Prisma.BoolFilter<"Cocktail"> | boolean
   ingredients?: Prisma.JsonFilter<"Cocktail">
   steps?: Prisma.JsonFilter<"Cocktail">
   prepTimeMin?: Prisma.IntNullableFilter<"Cocktail"> | number | null
@@ -321,9 +359,12 @@ export type CocktailOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageFilename?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageWidth?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageHeight?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   isAlcoholFree?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   ingredients?: Prisma.SortOrder
   steps?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -345,9 +386,12 @@ export type CocktailScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Cocktail"> | string
   description?: Prisma.StringWithAggregatesFilter<"Cocktail"> | string
   imageFilename?: Prisma.StringNullableWithAggregatesFilter<"Cocktail"> | string | null
+  imageWidth?: Prisma.IntNullableWithAggregatesFilter<"Cocktail"> | number | null
+  imageHeight?: Prisma.IntNullableWithAggregatesFilter<"Cocktail"> | number | null
   category?: Prisma.StringWithAggregatesFilter<"Cocktail"> | string
   isAlcoholFree?: Prisma.BoolWithAggregatesFilter<"Cocktail"> | boolean
   isAvailable?: Prisma.BoolWithAggregatesFilter<"Cocktail"> | boolean
+  isArchived?: Prisma.BoolWithAggregatesFilter<"Cocktail"> | boolean
   ingredients?: Prisma.JsonWithAggregatesFilter<"Cocktail">
   steps?: Prisma.JsonWithAggregatesFilter<"Cocktail">
   prepTimeMin?: Prisma.IntNullableWithAggregatesFilter<"Cocktail"> | number | null
@@ -361,9 +405,12 @@ export type CocktailCreateInput = {
   name: string
   description: string
   imageFilename?: string | null
+  imageWidth?: number | null
+  imageHeight?: number | null
   category: string
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: number | null
@@ -378,9 +425,12 @@ export type CocktailUncheckedCreateInput = {
   name: string
   description: string
   imageFilename?: string | null
+  imageWidth?: number | null
+  imageHeight?: number | null
   category: string
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: number | null
@@ -395,9 +445,12 @@ export type CocktailUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -412,9 +465,12 @@ export type CocktailUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -429,9 +485,12 @@ export type CocktailCreateManyInput = {
   name: string
   description: string
   imageFilename?: string | null
+  imageWidth?: number | null
+  imageHeight?: number | null
   category: string
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: number | null
@@ -445,9 +504,12 @@ export type CocktailUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -461,9 +523,12 @@ export type CocktailUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -477,9 +542,12 @@ export type CocktailCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageFilename?: Prisma.SortOrder
+  imageWidth?: Prisma.SortOrder
+  imageHeight?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isAlcoholFree?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   ingredients?: Prisma.SortOrder
   steps?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
@@ -489,6 +557,8 @@ export type CocktailCountOrderByAggregateInput = {
 }
 
 export type CocktailAvgOrderByAggregateInput = {
+  imageWidth?: Prisma.SortOrder
+  imageHeight?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
@@ -498,9 +568,12 @@ export type CocktailMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageFilename?: Prisma.SortOrder
+  imageWidth?: Prisma.SortOrder
+  imageHeight?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isAlcoholFree?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -512,9 +585,12 @@ export type CocktailMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageFilename?: Prisma.SortOrder
+  imageWidth?: Prisma.SortOrder
+  imageHeight?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isAlcoholFree?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -522,6 +598,8 @@ export type CocktailMinOrderByAggregateInput = {
 }
 
 export type CocktailSumOrderByAggregateInput = {
+  imageWidth?: Prisma.SortOrder
+  imageHeight?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
@@ -539,16 +617,16 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -582,9 +660,12 @@ export type CocktailCreateWithoutOrderItemsInput = {
   name: string
   description: string
   imageFilename?: string | null
+  imageWidth?: number | null
+  imageHeight?: number | null
   category: string
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: number | null
@@ -598,9 +679,12 @@ export type CocktailUncheckedCreateWithoutOrderItemsInput = {
   name: string
   description: string
   imageFilename?: string | null
+  imageWidth?: number | null
+  imageHeight?: number | null
   category: string
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: number | null
@@ -630,9 +714,12 @@ export type CocktailUpdateWithoutOrderItemsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -646,9 +733,12 @@ export type CocktailUncheckedUpdateWithoutOrderItemsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageFilename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageWidth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  imageHeight?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   isAlcoholFree?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ingredients?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   steps?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -693,9 +783,12 @@ export type CocktailSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name?: boolean
   description?: boolean
   imageFilename?: boolean
+  imageWidth?: boolean
+  imageHeight?: boolean
   category?: boolean
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients?: boolean
   steps?: boolean
   prepTimeMin?: boolean
@@ -711,9 +804,12 @@ export type CocktailSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   description?: boolean
   imageFilename?: boolean
+  imageWidth?: boolean
+  imageHeight?: boolean
   category?: boolean
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients?: boolean
   steps?: boolean
   prepTimeMin?: boolean
@@ -727,9 +823,12 @@ export type CocktailSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   description?: boolean
   imageFilename?: boolean
+  imageWidth?: boolean
+  imageHeight?: boolean
   category?: boolean
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients?: boolean
   steps?: boolean
   prepTimeMin?: boolean
@@ -743,9 +842,12 @@ export type CocktailSelectScalar = {
   name?: boolean
   description?: boolean
   imageFilename?: boolean
+  imageWidth?: boolean
+  imageHeight?: boolean
   category?: boolean
   isAlcoholFree?: boolean
   isAvailable?: boolean
+  isArchived?: boolean
   ingredients?: boolean
   steps?: boolean
   prepTimeMin?: boolean
@@ -754,7 +856,7 @@ export type CocktailSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CocktailOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "imageFilename" | "category" | "isAlcoholFree" | "isAvailable" | "ingredients" | "steps" | "prepTimeMin" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["cocktail"]>
+export type CocktailOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "imageFilename" | "imageWidth" | "imageHeight" | "category" | "isAlcoholFree" | "isAvailable" | "isArchived" | "ingredients" | "steps" | "prepTimeMin" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["cocktail"]>
 export type CocktailInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orderItems?: boolean | Prisma.Cocktail$orderItemsArgs<ExtArgs>
   _count?: boolean | Prisma.CocktailCountOutputTypeDefaultArgs<ExtArgs>
@@ -772,9 +874,12 @@ export type $CocktailPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     name: string
     description: string
     imageFilename: string | null
+    imageWidth: number | null
+    imageHeight: number | null
     category: string
     isAlcoholFree: boolean
     isAvailable: boolean
+    isArchived: boolean
     ingredients: runtime.JsonValue
     steps: runtime.JsonValue
     prepTimeMin: number | null
@@ -1209,9 +1314,12 @@ export interface CocktailFieldRefs {
   readonly name: Prisma.FieldRef<"Cocktail", 'String'>
   readonly description: Prisma.FieldRef<"Cocktail", 'String'>
   readonly imageFilename: Prisma.FieldRef<"Cocktail", 'String'>
+  readonly imageWidth: Prisma.FieldRef<"Cocktail", 'Int'>
+  readonly imageHeight: Prisma.FieldRef<"Cocktail", 'Int'>
   readonly category: Prisma.FieldRef<"Cocktail", 'String'>
   readonly isAlcoholFree: Prisma.FieldRef<"Cocktail", 'Boolean'>
   readonly isAvailable: Prisma.FieldRef<"Cocktail", 'Boolean'>
+  readonly isArchived: Prisma.FieldRef<"Cocktail", 'Boolean'>
   readonly ingredients: Prisma.FieldRef<"Cocktail", 'Json'>
   readonly steps: Prisma.FieldRef<"Cocktail", 'Json'>
   readonly prepTimeMin: Prisma.FieldRef<"Cocktail", 'Int'>
