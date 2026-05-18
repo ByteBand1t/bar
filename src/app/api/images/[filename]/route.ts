@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs/promises";
+import crypto from "crypto";
 
 const IMAGES_DIR = "/data/images";
 
@@ -13,7 +14,7 @@ const MIME_TYPES: Record<string, string> = {
 };
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ filename: string }> }
 ) {
   const { filename } = await params;
@@ -32,11 +33,23 @@ export async function GET(
   const filePath = path.join(IMAGES_DIR, filename);
 
   try {
+    const stat = await fs.stat(filePath);
+    const etag = `"${crypto
+      .createHash("sha1")
+      .update(`${stat.mtimeMs}-${stat.size}`)
+      .digest("hex")}"`;
+
+    const ifNoneMatch = req.headers.get("if-none-match");
+    if (ifNoneMatch === etag) {
+      return new NextResponse(null, { status: 304, headers: { ETag: etag } });
+    }
+
     const data = await fs.readFile(filePath);
     return new NextResponse(data, {
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+        "Cache-Control": "public, max-age=31536000, immutable",
+        ETag: etag,
       },
     });
   } catch {

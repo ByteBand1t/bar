@@ -1,12 +1,12 @@
 # Stage 1: Install dependencies
-FROM node:22-alpine AS deps
+FROM node:22-slim AS deps
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY --from=deps /app/node_modules ./node_modules
@@ -15,11 +15,15 @@ COPY . .
 # Generate Prisma client and build Next.js
 ENV DATABASE_URL=file:/data/app.db
 ENV NEXT_TELEMETRY_DISABLED=1
+# Dummy values for build (not used at runtime)
+ENV SESSION_SECRET=build-time-placeholder-not-used-in-runtime-at-all
+ENV BAR_PIN=0000
+ENV ADMIN_PIN=0000
 RUN pnpm prisma generate
 RUN pnpm build
 
 # Stage 3: Production runner
-FROM node:22-alpine AS runner
+FROM node:22-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

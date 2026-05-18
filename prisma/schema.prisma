@@ -12,9 +12,12 @@ model Cocktail {
   name          String
   description   String
   imageFilename String?
+  imageWidth    Int?
+  imageHeight   Int?
   category      String
   isAlcoholFree Boolean     @default(false)
   isAvailable   Boolean     @default(true)
+  isArchived    Boolean     @default(false)
   ingredients   Json
   steps         Json
   prepTimeMin   Int?
