@@ -41,11 +41,10 @@ ADMIN_PIN=9999     # PIN für Admin-Zugang (/admin) – auch für /bar nutzbar
 ## Production Deployment
 
 ```bash
-# 1. DNS: A-Record für bar.franzi.app auf Server-IP setzen
-# 2. .env mit echten Werten anlegen (SESSION_SECRET, BAR_PIN, ADMIN_PIN)
+# 1. .env mit echten Werten anlegen (SESSION_SECRET, BAR_PIN, ADMIN_PIN)
 mkdir -p ./data/images
 
-# 3. Starten (Caddy holt Let's Encrypt Zertifikat automatisch)
+# 2. Starten
 docker compose up -d --build
 ```
 
@@ -55,6 +54,64 @@ Seed-Daten laden (einmalig nach erstem Start):
 
 ```bash
 docker compose exec app node_modules/.bin/tsx prisma/seed.ts
+```
+
+## Deployment hinter eigenem Reverse Proxy
+
+Die App läuft als reiner HTTP-Container. TLS wird durch den vorgelagerten Proxy
+(z. B. Nginx auf dem Host) terminiert. Caddy wird nicht verwendet.
+
+### Relevante ENV-Variablen
+
+| Variable | Standard | Bedeutung |
+|---|---|---|
+| `HOST_PORT` | `3000` | Host-Port, auf dem der Container erreichbar ist |
+| `DATA_DIR` | `./data` | Absoluter Pfad zum Daten-Verzeichnis (Portainer: absoluten Pfad angeben) |
+| `TRUST_PROXY` | `false` | Auf `true` setzen, wenn HTTPS durch Nginx terminiert wird – setzt `Secure`-Flag auf Session-Cookies |
+
+Beispiel `.env` für Nginx-Deployment:
+
+```env
+SESSION_SECRET=<openssl rand -hex 32>
+BAR_PIN=1234
+ADMIN_PIN=9999
+HOST_PORT=3000
+DATA_DIR=/srv/bar/data
+TRUST_PROXY=true
+```
+
+### Beispiel-Nginx-Konfiguration
+
+SSE-kompatible Konfiguration (wichtig für Live-Updates):
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name bar.example.com;
+
+    ssl_certificate     /etc/ssl/certs/bar.crt;
+    ssl_certificate_key /etc/ssl/private/bar.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # SSE / long-polling: Puffern deaktivieren
+        proxy_buffering          off;
+        proxy_cache              off;
+        proxy_read_timeout       3600s;
+        proxy_connect_timeout    10s;
+        proxy_send_timeout       3600s;
+
+        # Chunked Transfer beibehalten
+        chunked_transfer_encoding on;
+    }
+}
 ```
 
 ## Backup

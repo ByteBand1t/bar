@@ -24,7 +24,8 @@ const sessionOptions = {
   password: getSecret(),
   cookieOptions: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    // Use TRUST_PROXY=true when TLS is terminated by an upstream reverse proxy
+    secure: process.env.TRUST_PROXY === "true",
     sameSite: "lax" as const,
     maxAge: 60 * 60 * 12,
   },
