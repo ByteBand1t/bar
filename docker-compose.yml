@@ -7,28 +7,14 @@ services:
       - SESSION_SECRET=${SESSION_SECRET:?SESSION_SECRET ist nicht gesetzt – generieren mit: openssl rand -hex 32}
       - BAR_PIN=${BAR_PIN:-1234}
       - ADMIN_PIN=${ADMIN_PIN:-9999}
+      - TRUST_PROXY=${TRUST_PROXY:-false}
+    ports:
+      - "${HOST_PORT:-3000}:3000"
     volumes:
-      - ./data:/data
+      - ${DATA_DIR:-./data}:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3
-
-  caddy:
-    image: caddy:2-alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - app
-    restart: unless-stopped
-
-volumes:
-  caddy_data:
-  caddy_config:
