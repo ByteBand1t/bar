@@ -48,13 +48,33 @@ mkdir -p ./data/images
 docker compose up -d --build
 ```
 
-`docker compose up` schlägt mit klarer Fehlermeldung fehl, wenn `SESSION_SECRET` nicht gesetzt ist.
+Wenn `SESSION_SECRET` nicht gesetzt ist, startet der Stack mit einem unsicheren Platzhalterwert.
+**Für Produktion in Portainer unbedingt einen eigenen Secret-Wert setzen** (mind. 32 Zeichen).
 
 Seed-Daten laden (einmalig nach erstem Start):
 
 ```bash
 docker compose exec app node_modules/.bin/tsx prisma/seed.ts
 ```
+
+
+## Portainer-Installation
+
+Für Portainer-Stacks wird jetzt standardmäßig ein **named volume** (`bar_data`) verwendet.
+Dadurch funktioniert der Deploy ohne host-spezifische Pfade.
+
+1. Stack aus diesem Repository deployen (Compose + Dockerfile).
+2. In Portainer unter **Environment variables** mindestens setzen:
+   - `SESSION_SECRET` (dringend empfohlen, z. B. `openssl rand -hex 32`)
+   - `BAR_PIN`
+   - `ADMIN_PIN`
+3. Optional `HOST_PORT` setzen (Standard `3000`).
+
+Wenn `SESSION_SECRET` fehlt, nutzt der Stack einen Platzhalterwert, damit der Deploy in Portainer
+nicht blockiert wird. Danach sofort `SESSION_SECRET` in den Stack-Variablen setzen und neu deployen.
+
+Für persistente Daten nutzt der Stack das Volume `bar_data`
+(`app.db` + `images`).
 
 ## Deployment hinter eigenem Reverse Proxy
 
@@ -66,7 +86,6 @@ Die App läuft als reiner HTTP-Container. TLS wird durch den vorgelagerten Proxy
 | Variable | Standard | Bedeutung |
 |---|---|---|
 | `HOST_PORT` | `3000` | Host-Port, auf dem der Container erreichbar ist |
-| `DATA_DIR` | `./data` | Absoluter Pfad zum Daten-Verzeichnis (Portainer: absoluten Pfad angeben) |
 | `TRUST_PROXY` | `false` | Auf `true` setzen, wenn HTTPS durch Nginx terminiert wird – setzt `Secure`-Flag auf Session-Cookies |
 
 Beispiel `.env` für Nginx-Deployment:
@@ -76,7 +95,6 @@ SESSION_SECRET=<openssl rand -hex 32>
 BAR_PIN=1234
 ADMIN_PIN=9999
 HOST_PORT=3000
-DATA_DIR=/srv/bar/data
 TRUST_PROXY=true
 ```
 
