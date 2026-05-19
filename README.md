@@ -87,6 +87,68 @@ sqlite3 ./data/app.db "SELECT imageFilename FROM Cocktail WHERE imageFilename IS
 curl http://localhost/api/health
 ```
 
+## Pause-Modus
+
+Über den Status-Button oben rechts im Bar-Dashboard (`Aktiv` / `Pausiert`)
+kann die Bestellannahme global gestoppt werden (Pinkelpause,
+Tortenanschnitt). Optional mit Nachricht und Auto-Resume nach
+5/10/15/30 Min. Gäste sehen sofort (live via SSE) einen Banner; der
+Bestell-Button ist gesperrt. Beim Fortsetzen verschwindet der Banner mit
+grüner Bestätigung.
+
+## Schnell-Verfügbarkeit
+
+Im Bar-Dashboard öffnet der Button „Verfügbarkeit“ einen Drawer mit allen
+Cocktails und einem Toggle pro Drink. Umschalten wirkt sofort (live) auf
+der Gäste-Seite – Karten werden ausgegraut, Warenkorb-Items markiert.
+
+## Statistik
+
+`/bar/stats` (Bar+Admin): Live-Auswertung der Partynacht – KPIs,
+Bestellungen pro Zeit, Top-Cocktails, Gäste-Bestenliste,
+Wartezeit-Verteilung, Stornos. Zeitraum-Filter (Heute / Letzte Stunde /
+Letzten 15 Min / Alle). Aktualisiert sich live (debounced).
+
+## Party-Screen
+
+`/screen` (ohne Login, für Beamer/TV): Fullscreen-Bestenliste + Live-Ticker
+der letzten Bestellungen. Zeigt bewusst nur Vornamen und Zahlen, keine
+Notizen/Tags.
+
+## Export &amp; Backup
+
+`/admin/export` (Admin): CSV (Bestellungen, Items, Events, Cocktails –
+UTF-8 BOM, `;`-Separator für deutsches Excel), JSON-Dump der ganzen DB,
+und ein komplettes ZIP-Backup (`dump.json` + konsistente
+`db/app.db`-Kopie + alle Bilder).
+
+**Empfehlung:** Backup vor der Party (leerer Stand), einmal mittendrin
+und nach der Party ziehen.
+
+### Auto-Backup (optional, nicht implementiert – nur Doku)
+
+Stündliches Cron auf dem Host (Header-Secret in ENV setzen und in einer
+kleinen Auth-Erweiterung prüfen):
+
+```bash
+0 * * * * curl -sS -H "X-Backup-Secret: $BACKUP_SECRET" \
+  https://bar.franzi.app/api/admin/export/backup.zip \
+  -o /backups/bar-$(date +\%Y\%m\%d-\%H\%M).zip
+```
+
+## Vor der Party – Checkliste
+
+1. PINs in `.env` ändern (`BAR_PIN`, `ADMIN_PIN`)
+2. `SESSION_SECRET` generieren (`openssl rand -hex 32`) – App startet in
+   Production ohne nicht
+3. DNS (`bar.franzi.app`) auf Server-IP zeigen lassen
+4. `docker compose up -d --build`
+5. Cocktails im Admin (`/admin`) anlegen
+6. Test-Bestellung machen (`/` → `/cart` → `/status/[id]`)
+7. Backup ziehen (`/admin/export`)
+8. Sound an der Bar testen (`/bar`, Sound-Toggle)
+9. `/screen` auf Beamer/TV öffnen
+
 ## Routen
 
 | Route | Beschreibung | Auth |
@@ -95,12 +157,21 @@ curl http://localhost/api/health
 | `/cart` | Warenkorb + Bestellung | – |
 | `/status/[id]` | Bestellstatus | – |
 | `/bar` | Bar-Dashboard (Kanban) | Bar-PIN |
+| `/bar/stats` | Statistik-Dashboard | Bar-PIN |
 | `/bar/login` | Bar-Anmeldung | – |
+| `/screen` | Party-Screen (Beamer) | – |
 | `/admin` | Cocktail-Verwaltung | Admin-PIN |
+| `/admin/export` | Export &amp; Backup | Admin-PIN |
 | `/admin/cocktails/new` | Neuer Cocktail | Admin-PIN |
 | `/admin/cocktails/[id]` | Cocktail bearbeiten | Admin-PIN |
 | `/api/cocktails` | Verfügbare Cocktails (GET) | – |
 | `/api/orders` | Bestellung erstellen (POST) | – |
+| `/api/bar-state` | Pause-Status (GET) | – |
+| `/api/guest/stream` | Gäste-SSE (Pause/Verfügbarkeit) | – |
+| `/api/bar/pause` · `/api/bar/resume` | Pause steuern (POST) | Bar-PIN |
+| `/api/bar/stats` | Aggregierte Statistik (GET) | Bar-PIN |
+| `/api/screen` · `/api/screen/stream` | Party-Screen-Daten | – |
+| `/api/admin/export/*` | CSV/JSON/ZIP-Export | Admin-PIN |
 | `/api/auth/login` | Anmelden (POST) | – |
 | `/api/auth/logout` | Abmelden (POST) | – |
 | `/api/health` | Healthcheck (GET) | – |

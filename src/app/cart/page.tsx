@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Minus, Plus, Trash2, ShoppingCart, AlertTriangle } from "lucide-react";
 import Link from "next/link";
@@ -21,10 +21,11 @@ export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   const acceptingOrders = useLiveStore((s) => s.barState.acceptingOrders);
   const availability = useLiveStore((s) => s.availability);
-  const idempotencyKey = useRef<string>("");
-  if (!idempotencyKey.current && typeof crypto !== "undefined") {
-    idempotencyKey.current = crypto.randomUUID();
-  }
+  const [idempotencyKey] = useState(() =>
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : ""
+  );
 
   const unavailableIds = items
     .filter((i) => availability[i.cocktailId] === false)
@@ -72,7 +73,7 @@ export default function CartPage() {
           guestName: guestName.trim(),
           guestTag: guestTag.trim() || undefined,
           notes: notes.trim() || undefined,
-          idempotencyKey: idempotencyKey.current || undefined,
+          idempotencyKey: idempotencyKey || undefined,
           items: items.map((item) => ({
             cocktailId: item.cocktailId,
             quantity: item.quantity,

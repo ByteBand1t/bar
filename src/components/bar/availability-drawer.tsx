@@ -25,6 +25,7 @@ export function AvailabilityDrawer({
 
   useEffect(() => {
     if (!open) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     fetch("/api/bar/cocktails")
       .then((r) => r.json())
