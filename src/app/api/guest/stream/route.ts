@@ -1,14 +1,11 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
 import { eventBus } from "@/lib/event-bus";
 import { getBarState } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
 function encodeSSE(event: string, data: unknown): Uint8Array {
-  const json = JSON.stringify(data);
-  const msg = `event: ${event}\ndata: ${json}\n\n`;
-  return new TextEncoder().encode(msg);
+  return new TextEncoder().encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
 }
 
 function encodeHeartbeat(): Uint8Array {
@@ -23,28 +20,11 @@ export async function GET(req: NextRequest) {
     "X-Accel-Buffering": "no",
   };
 
-  const activeOrders = await db.order.findMany({
-    where: { status: { in: ["new", "in_progress", "ready"] } },
-    orderBy: { createdAt: "asc" },
-    include: {
-      items: {
-        include: { cocktail: true },
-      },
-    },
-  });
-
   const barState = await getBarState();
 
   const stream = new ReadableStream({
     start(controller) {
-      controller.enqueue(encodeSSE("snapshot", activeOrders));
       controller.enqueue(encodeSSE("bar.state", barState));
-
-      const unsubscribe = eventBus.subscribe((event) => {
-        try {
-          controller.enqueue(encodeSSE(event.type, event.payload));
-        } catch {}
-      });
 
       const unsubscribeSystem = eventBus.subscribeSystem((event) => {
         try {
@@ -62,7 +42,6 @@ export async function GET(req: NextRequest) {
 
       req.signal.addEventListener("abort", () => {
         clearInterval(heartbeat);
-        unsubscribe();
         unsubscribeSystem();
         try {
           controller.close();
