@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { eventBus } from "@/lib/event-bus";
+import { getBarState } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -32,11 +33,20 @@ export async function GET(req: NextRequest) {
     },
   });
 
+  const barState = await getBarState();
+
   const stream = new ReadableStream({
     start(controller) {
       controller.enqueue(encodeSSE("snapshot", activeOrders));
+      controller.enqueue(encodeSSE("bar.state", barState));
 
       const unsubscribe = eventBus.subscribe((event) => {
+        try {
+          controller.enqueue(encodeSSE(event.type, event.payload));
+        } catch {}
+      });
+
+      const unsubscribeSystem = eventBus.subscribeSystem((event) => {
         try {
           controller.enqueue(encodeSSE(event.type, event.payload));
         } catch {}
@@ -53,6 +63,7 @@ export async function GET(req: NextRequest) {
       req.signal.addEventListener("abort", () => {
         clearInterval(heartbeat);
         unsubscribe();
+        unsubscribeSystem();
         try {
           controller.close();
         } catch {}

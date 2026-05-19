@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useCartStore } from "@/store/cart";
+import { useLiveStore } from "@/store/live";
 import { cn } from "@/lib/utils";
 
 interface Ingredient {
@@ -75,8 +76,11 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
   const [qty, setQty] = useState(1);
   const [open, setOpen] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
+  const override = useLiveStore((s) => s.availability[cocktail.id]);
+  const acceptingOrders = useLiveStore((s) => s.barState.acceptingOrders);
 
-  const isAvailable = cocktail.isAvailable;
+  const isAvailable = override ?? cocktail.isAvailable;
+  const canOrder = isAvailable && acceptingOrders;
 
   function handleAdd() {
     for (let i = 0; i < qty; i++) {
@@ -137,13 +141,16 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
               <Button
                 size="sm"
                 className="w-full"
+                disabled={!canOrder}
+                title={!acceptingOrders ? "Bestellannahme gerade pausiert" : undefined}
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (!canOrder) return;
                   addItem(cocktail.id, cocktail.name);
                 }}
               >
                 <Plus size={16} />
-                Hinzufügen
+                {acceptingOrders ? "Hinzufügen" : "Pausiert"}
               </Button>
             </div>
           )}
@@ -236,9 +243,15 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
             </button>
           </div>
 
-          <Button className="flex-1" size="lg" onClick={handleAdd}>
+          <Button
+            className="flex-1"
+            size="lg"
+            onClick={handleAdd}
+            disabled={!canOrder}
+            title={!acceptingOrders ? "Bestellannahme gerade pausiert" : undefined}
+          >
             <ShoppingCart size={20} />
-            In den Warenkorb
+            {acceptingOrders ? "In den Warenkorb" : "Bestellannahme pausiert"}
           </Button>
         </div>
       </DialogContent>

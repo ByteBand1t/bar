@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Volume2, VolumeX, History, RefreshCw, Settings } from "lucide-react";
+import { Volume2, VolumeX, History, RefreshCw, Settings, BarChart3, Wine } from "lucide-react";
 import { useBarStream } from "@/hooks/use-bar-stream";
 import { OrderCard } from "@/components/bar/order-card";
 import { HistoryDrawer } from "@/components/bar/history-drawer";
+import { PauseControl } from "@/components/bar/pause-control";
+import { AvailabilityDrawer } from "@/components/bar/availability-drawer";
 import { SoundInitBanner } from "@/components/bar/sound-init-banner";
+import { Toaster } from "@/components/ui/toast";
 import {
   isSoundEnabled,
   setSoundEnabled,
@@ -106,8 +109,31 @@ function StatsStrip({ orders }: { orders: OrderWithDetails[] }) {
   );
 }
 
+function LastActivity({ lastEventAt }: { lastEventAt: number }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 5000);
+    return () => clearInterval(t);
+  }, []);
+  const sec = Math.floor((now - lastEventAt) / 1000);
+  if (sec < 5) return null;
+  return (
+    <span className="hidden lg:inline text-xs text-purple-500">
+      Letzte Aktivität vor {sec < 60 ? `${sec}s` : `${Math.floor(sec / 60)}m`}
+    </span>
+  );
+}
+
 export function BarDashboard() {
-  const { orders, connectionState, updateOrderOptimistic, removeOrder } = useBarStream();
+  const {
+    orders,
+    connectionState,
+    barState,
+    lastEventAt,
+    updateOrderOptimistic,
+    removeOrder,
+  } = useBarStream();
+  const [availabilityOpen, setAvailabilityOpen] = useState(false);
   const [soundEnabled, setSoundEnabledState] = useState(() => {
     if (typeof window === "undefined") return true;
     return isSoundEnabled();
@@ -262,6 +288,8 @@ export function BarDashboard() {
           <StatsStrip orders={orders} />
 
           <div className="flex items-center gap-3 ml-auto">
+            <LastActivity lastEventAt={lastEventAt} />
+            <PauseControl barState={barState} />
             <ConnectionLed state={connectionState} />
 
             <div className="flex items-center gap-1.5">
@@ -287,12 +315,29 @@ export function BarDashboard() {
             </div>
 
             <button
+              onClick={() => setAvailabilityOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
+            >
+              <Wine size={16} />
+              <span className="hidden sm:inline">Verfügbarkeit</span>
+            </button>
+
+            <button
               onClick={() => setHistoryOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
             >
               <History size={16} />
               <span className="hidden sm:inline">Verlauf</span>
             </button>
+
+            <a
+              href="/bar/stats"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
+              title="Statistik"
+            >
+              <BarChart3 size={16} />
+              <span className="hidden sm:inline">Statistik</span>
+            </a>
 
             <a
               href="/admin"
@@ -357,6 +402,11 @@ export function BarDashboard() {
           onClose={() => setHistoryOpen(false)}
           onReopen={handleReopen}
         />
+        <AvailabilityDrawer
+          open={availabilityOpen}
+          onClose={() => setAvailabilityOpen(false)}
+        />
+        <Toaster />
       </div>
     </TooltipProvider>
   );

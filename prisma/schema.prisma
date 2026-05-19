@@ -53,6 +53,12 @@ model OrderItem {
   cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
 }
 
+model BarSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 model OrderEvent {
   id        String   @id @default(cuid())
   orderId   String

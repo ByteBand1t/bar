@@ -6,10 +6,22 @@ import { playNotification } from "@/lib/sound";
 
 type ConnectionState = "connecting" | "connected" | "disconnected";
 
+export interface BarStateValue {
+  acceptingOrders: boolean;
+  pauseMessage: string | null;
+  pauseUntil: string | null;
+}
+
 export function useBarStream() {
   const [orders, setOrders] = useState<OrderWithDetails[]>([]);
   const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
+  const [barState, setBarState] = useState<BarStateValue>({
+    acceptingOrders: true,
+    pauseMessage: null,
+    pauseUntil: null,
+  });
+  const [lastEventAt, setLastEventAt] = useState<number>(() => Date.now());
   const esRef = useRef<EventSource | null>(null);
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mountedRef = useRef(true);
@@ -32,10 +44,25 @@ export function useBarStream() {
       setOrders(data);
       setConnectionState("connected");
       setReconnectAttempts(0);
+      setLastEventAt(Date.now());
+    });
+
+    const onBarState = (e: MessageEvent) => {
+      if (!mountedRef.current) return;
+      try {
+        setBarState(JSON.parse(e.data) as BarStateValue);
+      } catch {}
+    };
+    es.addEventListener("bar.state", onBarState);
+    es.addEventListener("bar.state_changed", onBarState);
+
+    es.addEventListener("heartbeat", () => {
+      if (mountedRef.current) setLastEventAt(Date.now());
     });
 
     es.addEventListener("order.created", (e: MessageEvent) => {
       if (!mountedRef.current) return;
+      setLastEventAt(Date.now());
       const order: OrderWithDetails = JSON.parse(e.data);
       setOrders((prev) => {
         if (prev.some((o) => o.id === order.id)) return prev;
@@ -46,6 +73,7 @@ export function useBarStream() {
 
     es.addEventListener("order.updated", (e: MessageEvent) => {
       if (!mountedRef.current) return;
+      setLastEventAt(Date.now());
       const order: OrderWithDetails = JSON.parse(e.data);
       setOrders((prev) => prev.map((o) => (o.id === order.id ? order : o)));
     });
@@ -120,6 +148,8 @@ export function useBarStream() {
     orders,
     connectionState,
     reconnectAttempts,
+    barState,
+    lastEventAt,
     updateOrderOptimistic,
     removeOrder,
   };

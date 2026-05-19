@@ -57,6 +57,11 @@ export type Order = Prisma.OrderModel
  */
 export type OrderItem = Prisma.OrderItemModel
 /**
+ * Model BarSetting
+ * 
+ */
+export type BarSetting = Prisma.BarSettingModel
+/**
  * Model OrderEvent
  * 
  */

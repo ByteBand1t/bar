@@ -46,13 +46,29 @@ export interface BarEvent {
   payload: OrderWithDetails;
 }
 
+export interface BarStateValue {
+  acceptingOrders: boolean;
+  pauseMessage: string | null;
+  pauseUntil: string | null;
+}
+
+export interface CocktailAvailabilityValue {
+  id: string;
+  isAvailable: boolean;
+}
+
+export type SystemEvent =
+  | { type: "bar.state_changed"; payload: BarStateValue }
+  | { type: "cocktail.availability_changed"; payload: CocktailAvailabilityValue };
+
 type EventHandler = (event: BarEvent) => void;
+type SystemEventHandler = (event: SystemEvent) => void;
 
 class EventBus {
   private emitter = new EventEmitter();
 
   constructor() {
-    this.emitter.setMaxListeners(100);
+    this.emitter.setMaxListeners(200);
   }
 
   publish(type: BarEventType, payload: OrderWithDetails) {
@@ -62,6 +78,15 @@ class EventBus {
   subscribe(handler: EventHandler): () => void {
     this.emitter.on("bar-event", handler);
     return () => this.emitter.off("bar-event", handler);
+  }
+
+  publishSystem(event: SystemEvent) {
+    this.emitter.emit("sys-event", event);
+  }
+
+  subscribeSystem(handler: SystemEventHandler): () => void {
+    this.emitter.on("sys-event", handler);
+    return () => this.emitter.off("sys-event", handler);
   }
 }
 

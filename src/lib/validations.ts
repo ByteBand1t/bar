@@ -7,6 +7,7 @@ export const CreateOrderSchema = z.object({
     .max(40, "Name darf maximal 40 Zeichen lang sein"),
   guestTag: z.string().max(40).optional(),
   notes: z.string().max(200).optional(),
+  idempotencyKey: z.string().min(8).max(64).optional(),
   items: z
     .array(
       z.object({

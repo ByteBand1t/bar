@@ -44,6 +44,12 @@ function AdminHeader() {
           >
             Cocktails
           </Link>
+          <Link
+            href="/admin/export"
+            className="text-sm text-purple-300 hover:text-white transition-colors"
+          >
+            Export
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-3">

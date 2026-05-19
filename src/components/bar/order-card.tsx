@@ -81,6 +81,8 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
     }
   }, [isNew]);
 
+  const isStale = order.status === "new" && elapsed > 3600;
+
   const handleStatus = (newStatus: string) => {
     const prev = order.status;
     onStatusChange(
@@ -105,9 +107,13 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
   return (
     <>
       <div
-        className={`rounded-xl border bg-[#0f0a1e]/80 p-4 space-y-3 transition-all ${
+        className={`rounded-xl border p-4 space-y-3 transition-all ${
           highlight ? "ring-2 ring-amber-400 scale-[1.01]" : ""
-        } border-purple-800/40`}
+        } ${
+          isStale
+            ? "bg-red-950/70 border-red-700 stale-order"
+            : "bg-[#0f0a1e]/80 border-purple-800/40"
+        }`}
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
