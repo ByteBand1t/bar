@@ -387,6 +387,7 @@ export const ModelName = {
   Cocktail: 'Cocktail',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  BarSetting: 'BarSetting',
   OrderEvent: 'OrderEvent'
 } as const
 
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cocktail" | "order" | "orderItem" | "orderEvent"
+    modelProps: "cocktail" | "order" | "orderItem" | "barSetting" | "orderEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -629,6 +630,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BarSetting: {
+      payload: Prisma.$BarSettingPayload<ExtArgs>
+      fields: Prisma.BarSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BarSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BarSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.BarSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BarSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        findMany: {
+          args: Prisma.BarSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>[]
+        }
+        create: {
+          args: Prisma.BarSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        createMany: {
+          args: Prisma.BarSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BarSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.BarSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        update: {
+          args: Prisma.BarSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.BarSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BarSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BarSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.BarSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BarSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.BarSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBarSetting>
+        }
+        groupBy: {
+          args: Prisma.BarSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BarSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BarSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BarSettingCountAggregateOutputType> | number
+        }
+      }
+    }
     OrderEvent: {
       payload: Prisma.$OrderEventPayload<ExtArgs>
       fields: Prisma.OrderEventFieldRefs
@@ -785,6 +860,15 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const BarSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BarSettingScalarFieldEnum = (typeof BarSettingScalarFieldEnum)[keyof typeof BarSettingScalarFieldEnum]
 
 
 export const OrderEventScalarFieldEnum = {
@@ -1016,6 +1100,7 @@ export type GlobalOmitConfig = {
   cocktail?: Prisma.CocktailOmit
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
+  barSetting?: Prisma.BarSettingOmit
   orderEvent?: Prisma.OrderEventOmit
 }
 

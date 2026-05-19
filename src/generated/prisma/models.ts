@@ -11,5 +11,6 @@
 export type * from './models/Cocktail'
 export type * from './models/Order'
 export type * from './models/OrderItem'
+export type * from './models/BarSetting'
 export type * from './models/OrderEvent'
 export type * from './commonInputTypes'

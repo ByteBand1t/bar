@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, ShoppingCart, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart";
+import { useLiveStore } from "@/store/live";
 import { Button } from "@/components/ui/button";
+import { GuestLive } from "@/components/guest-live";
 import { addToast, Toaster } from "@/components/ui/toast";
 
 export default function CartPage() {
@@ -17,6 +19,17 @@ export default function CartPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [mounted, setMounted] = useState(false);
+  const acceptingOrders = useLiveStore((s) => s.barState.acceptingOrders);
+  const availability = useLiveStore((s) => s.availability);
+  const idempotencyKey = useRef<string>("");
+  if (!idempotencyKey.current && typeof crypto !== "undefined") {
+    idempotencyKey.current = crypto.randomUUID();
+  }
+
+  const unavailableIds = items
+    .filter((i) => availability[i.cocktailId] === false)
+    .map((i) => i.cocktailId);
+  const hasUnavailable = unavailableIds.length > 0;
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setMounted(true); }, []);
@@ -30,6 +43,13 @@ export default function CartPage() {
     }
     if (items.length === 0) {
       errs.items = "Bitte mindestens ein Getränk hinzufügen";
+    }
+    if (!acceptingOrders) {
+      errs.items = "Bestellannahme ist gerade pausiert";
+    }
+    if (hasUnavailable) {
+      errs.items =
+        "Manche Getränke sind nicht mehr verfügbar – bitte entfernen.";
     }
     return errs;
   }
@@ -52,6 +72,7 @@ export default function CartPage() {
           guestName: guestName.trim(),
           guestTag: guestTag.trim() || undefined,
           notes: notes.trim() || undefined,
+          idempotencyKey: idempotencyKey.current || undefined,
           items: items.map((item) => ({
             cocktailId: item.cocktailId,
             quantity: item.quantity,
@@ -63,8 +84,22 @@ export default function CartPage() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (data.error === "items_unavailable") {
+          setErrors({
+            items:
+              "Manche Getränke sind nicht mehr verfügbar – bitte entfernen.",
+          });
+          addToast(data.message ?? "Getränke nicht mehr verfügbar", "error");
+          return;
+        }
+        if (data.error === "bar_paused") {
+          setErrors({ items: data.message ?? "Bestellannahme pausiert" });
+          addToast(data.message ?? "Bestellannahme pausiert", "error");
+          return;
+        }
         const msg =
-          data.error ?? "Bestellung konnte nicht abgeschickt werden. Bitte nochmal versuchen.";
+          data.message ??
+          "Bestellung konnte nicht abgeschickt werden. Bitte nochmal versuchen.";
         addToast(msg, "error");
         return;
       }
@@ -88,6 +123,7 @@ export default function CartPage() {
 
   return (
     <>
+      <GuestLive />
       <header className="sticky top-0 z-30 bg-[#0f0a1e]/90 backdrop-blur-md border-b border-purple-900/50 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <Link
@@ -121,10 +157,20 @@ export default function CartPage() {
                 {items.map((item) => (
                   <li
                     key={item.cocktailId}
-                    className="flex items-center gap-3 bg-[#1a1030] rounded-xl p-3 border border-purple-800/50"
+                    className={`flex items-center gap-3 rounded-xl p-3 border ${
+                      availability[item.cocktailId] === false
+                        ? "bg-red-950/40 border-red-700/60"
+                        : "bg-[#1a1030] border-purple-800/50"
+                    }`}
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-amber-200 text-sm truncate">{item.name}</p>
+                      {availability[item.cocktailId] === false && (
+                        <p className="text-xs text-red-300 mt-0.5 flex items-center gap-1">
+                          <AlertTriangle size={12} />
+                          nicht mehr verfügbar – bitte entfernen
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-1 bg-purple-900/40 rounded-lg">
@@ -234,9 +280,27 @@ export default function CartPage() {
               type="submit"
               size="lg"
               className="w-full"
-              disabled={submitting || items.length === 0}
+              disabled={
+                submitting ||
+                items.length === 0 ||
+                !acceptingOrders ||
+                hasUnavailable
+              }
+              title={
+                !acceptingOrders
+                  ? "Bestellannahme gerade pausiert"
+                  : hasUnavailable
+                    ? "Nicht verfügbare Getränke entfernen"
+                    : undefined
+              }
             >
-              {submitting ? "Wird abgeschickt..." : "Bestellung abschicken"}
+              {submitting
+                ? "Wird abgeschickt..."
+                : !acceptingOrders
+                  ? "Bestellannahme pausiert"
+                  : hasUnavailable
+                    ? "Nicht verfügbare Getränke entfernen"
+                    : "Bestellung abschicken"}
             </Button>
           </div>
         </form>

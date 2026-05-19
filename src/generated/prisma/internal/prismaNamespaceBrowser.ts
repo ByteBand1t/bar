@@ -54,6 +54,7 @@ export const ModelName = {
   Cocktail: 'Cocktail',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  BarSetting: 'BarSetting',
   OrderEvent: 'OrderEvent'
 } as const
 
@@ -116,6 +117,15 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const BarSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BarSettingScalarFieldEnum = (typeof BarSettingScalarFieldEnum)[keyof typeof BarSettingScalarFieldEnum]
 
 
 export const OrderEventScalarFieldEnum = {

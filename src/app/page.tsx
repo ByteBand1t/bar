@@ -4,6 +4,7 @@ import { CartIconLink } from "@/components/cart-icon-link";
 import { CartFab } from "@/components/cart-fab";
 import { Toaster } from "@/components/ui/toast";
 import { FilterChips } from "@/components/filter-chips";
+import { GuestLive } from "@/components/guest-live";
 import type { Cocktail } from "@/types/cocktail";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +47,7 @@ export default async function HomePage({
 
   return (
     <>
+      <GuestLive />
       <header className="sticky top-0 z-30 bg-[#0f0a1e]/90 backdrop-blur-md border-b border-purple-900/50 px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
           <div>

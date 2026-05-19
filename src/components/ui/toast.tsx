@@ -7,13 +7,16 @@ import { cn } from "@/lib/utils";
 interface Toast {
   id: string;
   message: string;
-  variant?: "default" | "error";
+  variant?: "default" | "error" | "success";
 }
 
 let listeners: ((toasts: Toast[]) => void)[] = [];
 let toasts: Toast[] = [];
 
-export function addToast(message: string, variant: "default" | "error" = "default") {
+export function addToast(
+  message: string,
+  variant: "default" | "error" | "success" = "default"
+) {
   const id = Math.random().toString(36).slice(2);
   toasts = [...toasts, { id, message, variant }];
   listeners.forEach((l) => l(toasts));
@@ -46,7 +49,9 @@ export function Toaster() {
             "flex items-start gap-3 rounded-xl px-4 py-3 shadow-lg text-sm font-medium",
             toast.variant === "error"
               ? "bg-red-900 text-red-100 border border-red-700"
-              : "bg-purple-800 text-purple-100 border border-purple-600"
+              : toast.variant === "success"
+                ? "bg-emerald-800 text-emerald-100 border border-emerald-600"
+                : "bg-purple-800 text-purple-100 border border-purple-600"
           )}
         >
           <span className="flex-1">{toast.message}</span>
