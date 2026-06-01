@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+  /* Dark theme — used by the bar dashboard, party screen and admin area */
   --color-background: #0f0a1e;
   --color-foreground: #f0e6d3;
   --color-card: #1a1030;
@@ -10,6 +11,19 @@
   --color-bordeaux: #6b1a2a;
   --color-muted: #7060a0;
   --color-muted-foreground: #a090c0;
+
+  /* Guest light theme — bright, modern, food-delivery style.
+     Used only by the guest pages (/, /cart, /status). */
+  --color-guest-bg: #f6f6f4;        /* warm off-white page background */
+  --color-guest-surface: #ffffff;   /* white cards / sheets */
+  --color-guest-ink: #1f1d2b;       /* near-black text */
+  --color-guest-muted: #6b6b76;     /* muted secondary text */
+  --color-guest-border: #ececea;    /* subtle hairline borders */
+  --color-accent: #f5523c;          /* coral — friendly, appetizing accent */
+  --color-accent-hover: #e0402b;    /* darker coral for hover/active */
+  --color-accent-fg: #ffffff;       /* text/icon on accent */
+  --color-accent-soft: #fdeee9;     /* light coral tint for soft highlights */
+
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
