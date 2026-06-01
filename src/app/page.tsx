@@ -46,15 +46,15 @@ export default async function HomePage({
   });
 
   return (
-    <>
+    <div className="flex flex-1 flex-col bg-guest-bg text-guest-ink">
       <GuestLive />
-      <header className="sticky top-0 z-30 bg-[#0f0a1e]/90 backdrop-blur-md border-b border-purple-900/50 px-4 py-3">
+      <header className="sticky top-0 z-30 border-b border-guest-border bg-guest-surface/85 px-4 py-3 backdrop-blur-md">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
           <div>
-            <h1 className="text-lg font-bold text-amber-300 leading-tight">
-              Franzis Geburtstags-Bar
+            <h1 className="text-lg font-bold leading-tight text-guest-ink">
+              Franzis Geburtstags-Bar <span aria-hidden>🍹</span>
             </h1>
-            <p className="text-xs text-purple-400">{cocktails.length} Getränke zur Auswahl</p>
+            <p className="text-xs text-guest-muted">{cocktails.length} Getränke zur Auswahl</p>
           </div>
           <CartIconLink />
         </div>
@@ -64,7 +64,7 @@ export default async function HomePage({
         <FilterChips categories={CATEGORIES} active={category} />
 
         {filtered.length === 0 ? (
-          <div className="text-center py-16 text-purple-400">
+          <div className="text-center py-16 text-guest-muted">
             <div className="text-4xl mb-3">🍸</div>
             <p>Keine Getränke in dieser Kategorie</p>
           </div>
@@ -79,6 +79,6 @@ export default async function HomePage({
 
       <CartFab />
       <Toaster />
-    </>
+    </div>
   );
 }
