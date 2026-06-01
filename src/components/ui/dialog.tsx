@@ -34,7 +34,7 @@ export function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-50 max-h-[92dvh] overflow-y-auto rounded-t-2xl bg-[#1a1030] border-t border-purple-800 p-6 shadow-2xl",
+          "fixed bottom-0 left-0 right-0 z-50 max-h-[92dvh] overflow-y-auto rounded-t-2xl bg-guest-surface text-guest-ink border-t border-guest-border p-6 shadow-2xl",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
           "duration-300",
@@ -43,7 +43,7 @@ export function DialogContent({
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 text-purple-300 hover:bg-purple-800/50 hover:text-white focus:outline-none">
+        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full bg-guest-surface/80 p-2 text-guest-muted hover:bg-guest-bg hover:text-guest-ink focus:outline-none">
           <X size={20} />
           <span className="sr-only">Schließen</span>
         </DialogPrimitive.Close>
@@ -55,7 +55,7 @@ export function DialogContent({
 export function DialogTitle({ className, ...props }: DialogPrimitive.DialogTitleProps) {
   return (
     <DialogPrimitive.Title
-      className={cn("text-xl font-bold text-amber-300 pr-8", className)}
+      className={cn("text-xl font-bold text-guest-ink pr-8", className)}
       {...props}
     />
   );
