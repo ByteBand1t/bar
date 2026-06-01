@@ -51,7 +51,7 @@ function CocktailImage({
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-purple-900/40 text-5xl",
+          "flex items-center justify-center bg-accent-soft text-5xl",
           className
         )}
       >
@@ -95,10 +95,10 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
       <DialogTrigger asChild>
         <div
           className={cn(
-            "group relative rounded-xl overflow-hidden border transition-all duration-200 cursor-pointer",
+            "group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 cursor-pointer",
             isAvailable
-              ? "border-purple-800 hover:border-amber-500/50 bg-[#1a1030] hover:shadow-lg hover:shadow-purple-900/30"
-              : "border-purple-900/50 bg-[#120d20] opacity-60 cursor-not-allowed"
+              ? "border-guest-border bg-guest-surface shadow-sm hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5"
+              : "border-guest-border bg-guest-surface opacity-60 cursor-not-allowed"
           )}
           role="button"
           tabIndex={isAvailable ? 0 : -1}
@@ -107,21 +107,21 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
           }}
         >
           {/* Image */}
-          <div className="relative h-40 w-full bg-purple-900/20">
+          <div className="relative h-40 w-full bg-accent-soft">
             <CocktailImage
               filename={cocktail.imageFilename}
               name={cocktail.name}
               className="absolute inset-0"
             />
             {!isAvailable && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="text-sm font-semibold text-slate-400 bg-black/60 px-3 py-1 rounded-full">
+              <div className="absolute inset-0 bg-white/55 flex items-center justify-center">
+                <span className="text-sm font-semibold text-guest-ink bg-guest-surface/90 px-3 py-1 rounded-full shadow-sm">
                   Nicht verfügbar
                 </span>
               </div>
             )}
             {cocktail.isAlcoholFree && (
-              <span className="absolute top-2 left-2 text-xs bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded-full font-medium">
+              <span className="absolute top-2 left-2 text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full font-medium shadow-sm">
                 Alkoholfrei
               </span>
             )}
@@ -129,18 +129,18 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
 
           {/* Content */}
           <div className="p-3">
-            <h3 className="font-semibold text-amber-200 text-sm leading-tight">{cocktail.name}</h3>
-            <p className="text-xs text-purple-300 mt-1 line-clamp-2 leading-relaxed">
+            <h3 className="font-bold text-guest-ink text-sm leading-tight">{cocktail.name}</h3>
+            <p className="text-xs text-guest-muted mt-1 line-clamp-2 leading-relaxed">
               {cocktail.description}
             </p>
           </div>
 
           {/* Add button */}
           {isAvailable && (
-            <div className="px-3 pb-3">
+            <div className="mt-auto px-3 pb-3">
               <Button
                 size="sm"
-                className="w-full"
+                className="w-full bg-accent text-accent-fg hover:bg-accent-hover active:bg-accent-hover focus-visible:ring-accent"
                 disabled={!canOrder}
                 title={!acceptingOrders ? "Bestellannahme gerade pausiert" : undefined}
                 onClick={(e) => {
@@ -170,34 +170,34 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
         <DialogTitle>{cocktail.name}</DialogTitle>
 
         <div className="flex gap-2 mt-1 flex-wrap">
-          <span className="text-xs bg-purple-800/60 text-purple-300 px-2 py-0.5 rounded-full capitalize">
+          <span className="text-xs bg-accent-soft text-accent-hover px-2 py-0.5 rounded-full capitalize font-medium">
             {cocktail.category}
           </span>
           {cocktail.isAlcoholFree && (
-            <span className="text-xs bg-emerald-800/60 text-emerald-300 px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
               Alkoholfrei
             </span>
           )}
           {cocktail.prepTimeMin && (
-            <span className="text-xs bg-purple-800/60 text-purple-300 px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-guest-bg text-guest-muted px-2 py-0.5 rounded-full font-medium">
               ~{cocktail.prepTimeMin} Min
             </span>
           )}
         </div>
 
-        <p className="text-purple-200 mt-3 text-sm leading-relaxed">{cocktail.description}</p>
+        <p className="text-guest-ink mt-3 text-sm leading-relaxed">{cocktail.description}</p>
 
         {/* Ingredients */}
         {cocktail.ingredients.length > 0 && (
           <div className="mt-4">
-            <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-wider mb-2">
               Zutaten
             </h4>
             <ul className="space-y-1">
               {cocktail.ingredients.map((ing, i) => (
                 <li key={i} className="flex justify-between text-sm">
-                  <span className="text-purple-200">{ing.name}</span>
-                  <span className="text-purple-400 font-mono text-xs">{ing.amount}</span>
+                  <span className="text-guest-ink">{ing.name}</span>
+                  <span className="text-guest-muted font-mono text-xs">{ing.amount}</span>
                 </li>
               ))}
             </ul>
@@ -207,13 +207,13 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
         {/* Steps */}
         {cocktail.steps.length > 0 && (
           <div className="mt-4">
-            <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-wider mb-2">
               Zubereitung
             </h4>
             <ol className="space-y-1.5">
               {cocktail.steps.map((step, i) => (
-                <li key={i} className="flex gap-2 text-sm text-purple-200">
-                  <span className="shrink-0 font-mono text-amber-500 text-xs mt-0.5">
+                <li key={i} className="flex gap-2 text-sm text-guest-ink">
+                  <span className="shrink-0 font-mono text-accent text-xs mt-0.5">
                     {i + 1}.
                   </span>
                   <span>{step}</span>
@@ -225,18 +225,18 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
 
         {/* Quantity + Add to cart */}
         <div className="mt-6 flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-purple-900/40 rounded-lg p-1">
+          <div className="flex items-center gap-2 bg-guest-bg border border-guest-border rounded-lg p-1">
             <button
               onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="p-2 rounded-md text-purple-200 hover:bg-purple-800/60 disabled:opacity-40"
+              className="p-2 rounded-md text-guest-ink hover:bg-guest-border disabled:opacity-40"
               disabled={qty <= 1}
             >
               <Minus size={18} />
             </button>
-            <span className="w-8 text-center font-semibold text-amber-200">{qty}</span>
+            <span className="w-8 text-center font-semibold text-guest-ink">{qty}</span>
             <button
               onClick={() => setQty((q) => Math.min(10, q + 1))}
-              className="p-2 rounded-md text-purple-200 hover:bg-purple-800/60 disabled:opacity-40"
+              className="p-2 rounded-md text-guest-ink hover:bg-guest-border disabled:opacity-40"
               disabled={qty >= 10}
             >
               <Plus size={18} />
@@ -244,7 +244,7 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
           </div>
 
           <Button
-            className="flex-1"
+            className="flex-1 bg-accent text-accent-fg hover:bg-accent-hover active:bg-accent-hover focus-visible:ring-accent"
             size="lg"
             onClick={handleAdd}
             disabled={!canOrder}
