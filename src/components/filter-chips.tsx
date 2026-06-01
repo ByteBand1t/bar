@@ -32,8 +32,8 @@ function Chips({ categories, active }: { categories: Category[]; active: string 
             className={cn(
               "shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all",
               isActive
-                ? "bg-amber-500 text-slate-900"
-                : "bg-purple-900/50 text-purple-200 hover:bg-purple-800/70 border border-purple-700/50"
+                ? "bg-accent text-accent-fg shadow-sm"
+                : "bg-guest-surface text-guest-ink hover:bg-accent-soft border border-guest-border"
             )}
           >
             {cat.label}
@@ -52,7 +52,7 @@ export function FilterChips({ categories, active }: { categories: Category[]; ac
           {categories.map((cat) => (
             <span
               key={cat.value}
-              className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium bg-purple-900/50 text-purple-200"
+              className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium bg-guest-surface text-guest-ink border border-guest-border"
             >
               {cat.label}
             </span>
