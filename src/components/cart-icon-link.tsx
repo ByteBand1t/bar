@@ -10,12 +10,12 @@ export function CartIconLink() {
   return (
     <Link
       href="/cart"
-      className="relative flex items-center justify-center p-2 rounded-full text-amber-300 hover:bg-purple-800/50 transition-colors"
+      className="relative flex items-center justify-center p-2 rounded-full text-accent hover:bg-accent-soft transition-colors"
       aria-label={`Warenkorb (${totalItems} Artikel)`}
     >
       <ShoppingCart size={24} />
       {totalItems > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-amber-500 text-slate-900 text-xs font-bold rounded-full px-1">
+        <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-accent text-accent-fg text-xs font-bold rounded-full px-1">
           {totalItems > 99 ? "99+" : totalItems}
         </span>
       )}
