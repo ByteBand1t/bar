@@ -1,16 +1,20 @@
 # Stage 1: Install dependencies
-FROM node:22-slim AS deps
+# pnpm 10: the repo's pnpm-workspace.yaml uses pnpm-10 settings (allowBuilds /
+# ignoredBuiltDependencies) and has no `packages` field. pnpm 9 reads it as a
+# workspace manifest and aborts with "packages field missing or empty", which
+# is what broke `pnpm prisma generate` in the builder stage.
+# node:22 (not -slim) already ships openssl/libssl3/ca-certificates, so Prisma
+# finds its engine without needing an extra apt-get step.
+FROM node:22 AS deps
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
-RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build
-FROM node:22-slim AS builder
+FROM node:22 AS builder
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
-RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Generate Prisma client and build Next.js
@@ -24,9 +28,8 @@ RUN pnpm prisma generate
 RUN pnpm build
 
 # Stage 3: Production runner
-FROM node:22-slim AS runner
+FROM node:22 AS runner
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:/data/app.db
