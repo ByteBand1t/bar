@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Minus, Plus, Trash2, ShoppingCart, AlertTriangle } from "lucide-react";
+import {
+  ArrowLeft,
+  Minus,
+  Plus,
+  Trash2,
+  ShoppingCart,
+  AlertTriangle,
+} from "lucide-react";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart";
 import { useLiveStore } from "@/store/live";
@@ -24,7 +31,7 @@ export default function CartPage() {
   const [idempotencyKey] = useState(() =>
     typeof crypto !== "undefined" && crypto.randomUUID
       ? crypto.randomUUID()
-      : ""
+      : "",
   );
 
   const unavailableIds = items
@@ -32,8 +39,10 @@ export default function CartPage() {
     .map((i) => i.cocktailId);
   const hasUnavailable = unavailableIds.length > 0;
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   function validate() {
     const errs: Record<string, string> = {};
@@ -117,7 +126,7 @@ export default function CartPage() {
   if (!mounted) {
     return (
       <div className="flex items-center justify-center min-h-dvh">
-        <div className="text-purple-400">Lade...</div>
+        <div className="text-guest-muted">Lade...</div>
       </div>
     );
   }
@@ -125,15 +134,15 @@ export default function CartPage() {
   return (
     <>
       <GuestLive />
-      <header className="sticky top-0 z-30 bg-[#0f0a1e]/90 backdrop-blur-md border-b border-purple-900/50 px-4 py-3">
+      <header className="sticky top-0 z-30 border-b border-guest-border bg-guest-surface/85 px-4 py-3 backdrop-blur-md">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <Link
             href="/"
-            className="p-2 rounded-full text-purple-300 hover:bg-purple-800/50 transition-colors"
+            className="rounded-full p-2 text-guest-ink transition-colors hover:bg-accent-soft hover:text-accent"
           >
             <ArrowLeft size={20} />
           </Link>
-          <h1 className="text-lg font-bold text-amber-300">Deine Bestellung</h1>
+          <h1 className="text-lg font-bold text-guest-ink">Deine Bestellung</h1>
         </div>
       </header>
 
@@ -141,15 +150,18 @@ export default function CartPage() {
         <form onSubmit={handleSubmit} noValidate>
           {/* Cart items */}
           <section className="mt-4">
-            <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-3">
+            <h2 className="text-sm font-semibold text-guest-ink uppercase tracking-wider mb-3">
               Ausgewählte Getränke
             </h2>
 
             {items.length === 0 ? (
-              <div className="text-center py-10 text-purple-400">
+              <div className="rounded-2xl border border-guest-border bg-guest-surface py-10 text-center text-guest-muted shadow-[var(--shadow-guest-card)]">
                 <ShoppingCart size={48} className="mx-auto mb-3 opacity-30" />
                 <p>Dein Warenkorb ist leer</p>
-                <Link href="/" className="text-amber-400 underline text-sm mt-2 inline-block">
+                <Link
+                  href="/"
+                  className="mt-2 inline-block text-sm font-medium text-accent underline"
+                >
                   Zurück zur Auswahl
                 </Link>
               </div>
@@ -158,38 +170,44 @@ export default function CartPage() {
                 {items.map((item) => (
                   <li
                     key={item.cocktailId}
-                    className={`flex items-center gap-3 rounded-xl p-3 border ${
+                    className={`flex items-center gap-3 rounded-2xl border p-3 shadow-[var(--shadow-guest-card)] ${
                       availability[item.cocktailId] === false
-                        ? "bg-red-950/40 border-red-700/60"
-                        : "bg-[#1a1030] border-purple-800/50"
+                        ? "border-guest-danger-border bg-guest-danger-bg"
+                        : "border-guest-border bg-guest-surface"
                     }`}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-amber-200 text-sm truncate">{item.name}</p>
+                      <p className="truncate text-sm font-semibold text-guest-ink">
+                        {item.name}
+                      </p>
                       {availability[item.cocktailId] === false && (
-                        <p className="text-xs text-red-300 mt-0.5 flex items-center gap-1">
+                        <p className="mt-0.5 flex items-center gap-1 text-xs font-medium text-guest-danger-ink">
                           <AlertTriangle size={12} />
                           nicht mehr verfügbar – bitte entfernen
                         </p>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1 bg-purple-900/40 rounded-lg">
+                    <div className="flex items-center gap-1 rounded-xl border border-guest-border bg-guest-bg p-1">
                       <button
                         type="button"
-                        onClick={() => updateQuantity(item.cocktailId, item.quantity - 1)}
-                        className="p-2 text-purple-300 hover:text-white disabled:opacity-30"
+                        onClick={() =>
+                          updateQuantity(item.cocktailId, item.quantity - 1)
+                        }
+                        className="min-h-10 min-w-10 rounded-lg p-2 text-guest-ink hover:bg-accent-soft hover:text-accent disabled:opacity-30"
                         disabled={item.quantity <= 1}
                       >
                         <Minus size={16} />
                       </button>
-                      <span className="w-7 text-center text-sm font-semibold text-amber-200">
+                      <span className="w-7 text-center text-sm font-semibold text-guest-ink">
                         {item.quantity}
                       </span>
                       <button
                         type="button"
-                        onClick={() => updateQuantity(item.cocktailId, item.quantity + 1)}
-                        className="p-2 text-purple-300 hover:text-white disabled:opacity-30"
+                        onClick={() =>
+                          updateQuantity(item.cocktailId, item.quantity + 1)
+                        }
+                        className="min-h-10 min-w-10 rounded-lg p-2 text-guest-ink hover:bg-accent-soft hover:text-accent disabled:opacity-30"
                         disabled={item.quantity >= 10}
                       >
                         <Plus size={16} />
@@ -199,7 +217,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.cocktailId)}
-                      className="p-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg"
+                      className="min-h-10 min-w-10 rounded-lg p-2 text-guest-danger-ink hover:bg-guest-danger-bg"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -207,21 +225,25 @@ export default function CartPage() {
                 ))}
               </ul>
             )}
-            {errors.items && <p className="text-red-400 text-sm mt-2">{errors.items}</p>}
+            {errors.items && (
+              <p className="mt-2 text-sm font-medium text-guest-danger-ink">
+                {errors.items}
+              </p>
+            )}
           </section>
 
           {/* Guest info */}
           <section className="mt-6 space-y-4">
-            <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">
+            <h2 className="text-sm font-semibold text-guest-ink uppercase tracking-wider">
               Deine Infos
             </h2>
 
             <div>
               <label
                 htmlFor="guestName"
-                className="block text-sm font-medium text-purple-200 mb-1.5"
+                className="mb-1.5 block text-sm font-semibold text-guest-ink"
               >
-                Dein Name <span className="text-red-400">*</span>
+                Dein Name <span className="text-guest-danger-ink">*</span>
               </label>
               <input
                 id="guestName"
@@ -230,19 +252,22 @@ export default function CartPage() {
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="z.B. Maria"
                 maxLength={40}
-                className="w-full bg-[#1a1030] border border-purple-700 rounded-xl px-4 py-3 text-purple-100 placeholder:text-purple-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 text-base"
+                className="w-full rounded-xl border border-guest-border bg-guest-input px-4 py-3 text-base text-guest-ink placeholder:text-guest-placeholder focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
               />
               {errors.guestName && (
-                <p className="text-red-400 text-sm mt-1">{errors.guestName}</p>
+                <p className="mt-1 text-sm font-medium text-guest-danger-ink">
+                  {errors.guestName}
+                </p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="guestTag"
-                className="block text-sm font-medium text-purple-200 mb-1.5"
+                className="mb-1.5 block text-sm font-semibold text-guest-ink"
               >
-                Wo bist du gerade? <span className="text-purple-500 text-xs">(optional)</span>
+                Wo bist du gerade?{" "}
+                <span className="text-xs text-guest-muted">(optional)</span>
               </label>
               <input
                 id="guestTag"
@@ -251,16 +276,17 @@ export default function CartPage() {
                 onChange={(e) => setGuestTag(e.target.value)}
                 placeholder="z.B. Tisch 3, im Garten..."
                 maxLength={40}
-                className="w-full bg-[#1a1030] border border-purple-700 rounded-xl px-4 py-3 text-purple-100 placeholder:text-purple-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 text-base"
+                className="w-full rounded-xl border border-guest-border bg-guest-input px-4 py-3 text-base text-guest-ink placeholder:text-guest-placeholder focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
               />
             </div>
 
             <div>
               <label
                 htmlFor="notes"
-                className="block text-sm font-medium text-purple-200 mb-1.5"
+                className="mb-1.5 block text-sm font-semibold text-guest-ink"
               >
-                Notiz <span className="text-purple-500 text-xs">(optional)</span>
+                Notiz{" "}
+                <span className="text-xs text-guest-muted">(optional)</span>
               </label>
               <textarea
                 id="notes"
@@ -269,9 +295,11 @@ export default function CartPage() {
                 placeholder='z.B. "bitte ohne Eis"'
                 maxLength={200}
                 rows={3}
-                className="w-full bg-[#1a1030] border border-purple-700 rounded-xl px-4 py-3 text-purple-100 placeholder:text-purple-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 text-base resize-none"
+                className="w-full resize-none rounded-xl border border-guest-border bg-guest-input px-4 py-3 text-base text-guest-ink placeholder:text-guest-placeholder focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
               />
-              <p className="text-xs text-purple-600 mt-1 text-right">{notes.length}/200</p>
+              <p className="mt-1 text-right text-xs text-guest-muted">
+                {notes.length}/200
+              </p>
             </div>
           </section>
 
@@ -280,7 +308,7 @@ export default function CartPage() {
             <Button
               type="submit"
               size="lg"
-              className="w-full"
+              className="w-full bg-accent text-accent-fg shadow-[var(--shadow-guest-button)] hover:bg-accent-hover active:bg-accent-hover focus-visible:ring-accent"
               disabled={
                 submitting ||
                 items.length === 0 ||
@@ -307,7 +335,7 @@ export default function CartPage() {
         </form>
       </main>
 
-      <Toaster />
+      <Toaster theme="guest" />
     </>
   );
 }
