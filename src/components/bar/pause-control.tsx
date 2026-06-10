@@ -94,12 +94,12 @@ export function PauseControl({ barState }: { barState: BarStateValue }) {
       <SheetContent open={open} onClose={() => setOpen(false)}>
         <div className="p-5 space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-amber-300">
+            <h2 className="text-lg font-bold text-accent">
               Bestellannahme
             </h2>
             <button
               onClick={() => setOpen(false)}
-              className="p-1.5 rounded-lg text-purple-400 hover:bg-purple-800/40"
+              className="p-1.5 rounded-lg text-bar-muted hover:bg-bar-soft"
             >
               <X size={18} />
             </button>
@@ -123,7 +123,7 @@ export function PauseControl({ barState }: { barState: BarStateValue }) {
           {accepting ? (
             <>
               <div>
-                <label className="block text-sm font-medium text-purple-200 mb-1.5">
+                <label className="block text-sm font-medium text-bar-ink mb-1.5">
                   Pause-Nachricht (optional)
                 </label>
                 <textarea
@@ -132,14 +132,14 @@ export function PauseControl({ barState }: { barState: BarStateValue }) {
                   rows={2}
                   maxLength={200}
                   placeholder="Was sollen die Gäste sehen?"
-                  className="w-full bg-[#1a1030] border border-purple-700 rounded-xl px-3 py-2 text-sm text-purple-100 placeholder:text-purple-600 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-bar-surface border border-bar-border rounded-xl px-3 py-2 text-sm text-bar-ink placeholder:text-bar-muted/50 focus:outline-none focus:border-accent"
                 />
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {QUICK_MESSAGES.map((m) => (
                     <button
                       key={m}
                       onClick={() => setMessage(m)}
-                      className="text-xs px-2 py-1 rounded-full bg-purple-800/50 text-purple-300 hover:bg-purple-700/60"
+                      className="text-xs px-2 py-1 rounded-full bg-bar-soft text-bar-muted hover:bg-bar-soft"
                     >
                       {m}
                     </button>
@@ -148,7 +148,7 @@ export function PauseControl({ barState }: { barState: BarStateValue }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-purple-200 mb-1.5">
+                <label className="block text-sm font-medium text-bar-ink mb-1.5">
                   Automatisch fortsetzen
                 </label>
                 <div className="flex flex-wrap gap-1.5">
@@ -158,8 +158,8 @@ export function PauseControl({ barState }: { barState: BarStateValue }) {
                       onClick={() => setResumeMin(r.min)}
                       className={`text-xs px-3 py-1.5 rounded-full border ${
                         resumeMin === r.min
-                          ? "bg-amber-500 text-slate-900 border-amber-500"
-                          : "bg-purple-800/40 text-purple-300 border-purple-700"
+                          ? "bg-amber-500 text-slate-900 border-accent"
+                          : "bg-bar-soft text-bar-muted border-bar-border"
                       }`}
                     >
                       {r.label}

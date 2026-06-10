@@ -31,9 +31,9 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const COLUMN_STYLES: Record<string, string> = {
-  new: "bg-amber-950/30 border-amber-800/30",
-  in_progress: "bg-blue-950/30 border-blue-800/30",
-  ready: "bg-emerald-950/30 border-emerald-800/30",
+  new: "bg-amber-500/10 border-amber-400/20 shadow-inner shadow-amber-950/20",
+  in_progress: "bg-blue-500/10 border-blue-400/20 shadow-inner shadow-blue-950/20",
+  ready: "bg-emerald-500/10 border-emerald-400/20 shadow-inner shadow-emerald-950/20",
 };
 
 const COLUMN_HEADER_STYLES: Record<string, string> = {
@@ -62,7 +62,7 @@ function ConnectionLed({ state }: { state: "connecting" | "connected" | "disconn
       <TooltipTrigger asChild>
         <div className="flex items-center gap-1.5 cursor-default">
           <div className={`w-2.5 h-2.5 rounded-full shadow-lg ${color} ${state === "connecting" ? "animate-pulse" : ""}`} />
-          <span className="text-xs text-purple-400 hidden sm:inline">{label}</span>
+          <span className="text-xs text-bar-muted hidden sm:inline">{label}</span>
         </div>
       </TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
@@ -96,7 +96,7 @@ function StatsStrip({ orders }: { orders: OrderWithDetails[] }) {
   }, [orders, now]);
 
   return (
-    <div className="hidden lg:flex items-center gap-4 text-sm text-purple-400">
+    <div className="hidden lg:flex items-center gap-4 text-sm text-bar-muted">
       <span>
         Aktiv: <span className="text-white font-medium">{activeCount}</span>
       </span>
@@ -118,7 +118,7 @@ function LastActivity({ lastEventAt }: { lastEventAt: number }) {
   const sec = Math.floor((now - lastEventAt) / 1000);
   if (sec < 5) return null;
   return (
-    <span className="hidden lg:inline text-xs text-purple-500">
+    <span className="hidden lg:inline text-xs text-bar-muted/70">
       Letzte Aktivität vor {sec < 60 ? `${sec}s` : `${Math.floor(sec / 60)}m`}
     </span>
   );
@@ -278,12 +278,12 @@ export function BarDashboard() {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col h-screen overflow-hidden select-none">
+      <div className="flex flex-col h-screen overflow-hidden select-none bg-bar-bg text-bar-ink">
         <SoundInitBanner />
 
         {/* Top Bar */}
-        <header className="flex items-center justify-between px-4 py-3 bg-[#0f0a1e] border-b border-purple-800/50 shrink-0 gap-4">
-          <h1 className="text-lg font-bold text-amber-300 shrink-0">Bar – Live-Bestellungen</h1>
+        <header className="flex items-center justify-between px-4 py-3 bg-bar-bg/95 border-b border-bar-border shadow-lg shadow-black/20 backdrop-blur shrink-0 gap-4">
+          <h1 className="text-lg font-bold text-bar-ink shrink-0">Bar – Live-Bestellungen</h1>
 
           <StatsStrip orders={orders} />
 
@@ -295,7 +295,7 @@ export function BarDashboard() {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={toggleSound}
-                className="p-1.5 rounded-lg text-purple-400 hover:text-white hover:bg-purple-800/30 transition-colors"
+                className="p-1.5 rounded-lg text-bar-muted hover:text-white hover:bg-bar-soft transition-colors"
                 title={soundEnabled ? "Sound aus" : "Sound an"}
               >
                 {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -316,7 +316,7 @@ export function BarDashboard() {
 
             <button
               onClick={() => setAvailabilityOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-bar-muted hover:text-white hover:bg-bar-soft transition-colors border border-bar-border"
             >
               <Wine size={16} />
               <span className="hidden sm:inline">Verfügbarkeit</span>
@@ -324,7 +324,7 @@ export function BarDashboard() {
 
             <button
               onClick={() => setHistoryOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-bar-muted hover:text-white hover:bg-bar-soft transition-colors border border-bar-border"
             >
               <History size={16} />
               <span className="hidden sm:inline">Verlauf</span>
@@ -332,7 +332,7 @@ export function BarDashboard() {
 
             <a
               href="/bar/stats"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-purple-300 hover:text-white hover:bg-purple-800/30 transition-colors border border-purple-700/50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-bar-muted hover:text-white hover:bg-bar-soft transition-colors border border-bar-border"
               title="Statistik"
             >
               <BarChart3 size={16} />
@@ -341,7 +341,7 @@ export function BarDashboard() {
 
             <a
               href="/admin"
-              className="p-1.5 rounded-lg text-purple-400 hover:text-white hover:bg-purple-800/30 transition-colors"
+              className="p-1.5 rounded-lg text-bar-muted hover:text-white hover:bg-bar-soft transition-colors"
               title="Admin"
             >
               <Settings size={18} />
@@ -371,7 +371,7 @@ export function BarDashboard() {
                 <span className={`font-bold text-sm tracking-wide ${COLUMN_HEADER_STYLES[status]}`}>
                   {STATUS_LABELS[status]}
                 </span>
-                <span className="ml-auto bg-black/30 text-xs font-mono text-purple-300 rounded-full px-2 py-0.5">
+                <span className="ml-auto bg-bar-bg/70 text-xs font-mono text-bar-muted rounded-full px-2 py-0.5">
                   {colOrders.length}
                 </span>
               </div>
@@ -379,7 +379,7 @@ export function BarDashboard() {
               {/* Cards */}
               <div className="flex-1 overflow-y-auto p-2 space-y-2">
                 {colOrders.length === 0 && (
-                  <div className="flex items-center justify-center h-24 text-purple-700 text-sm">
+                  <div className="flex items-center justify-center h-24 text-bar-muted/50 text-sm">
                     Keine Bestellungen
                   </div>
                 )}

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#0f0a1e] text-white">
+    <div className="min-h-screen bg-admin-bg text-admin-ink">
       <AdminHeader />
       <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
     </div>
@@ -32,21 +32,21 @@ function AdminHeader() {
   };
 
   return (
-    <header className="bg-[#1a1030] border-b border-purple-800/40 px-4 py-3">
+    <header className="sticky top-0 z-30 bg-admin-surface/90 border-b border-admin-border px-4 py-3 shadow-sm backdrop-blur">
       <div className="max-w-6xl mx-auto flex items-center gap-4">
-        <Settings size={20} className="text-amber-400" />
-        <span className="font-bold text-lg text-white">Admin</span>
+        <Settings size={20} className="text-accent" />
+        <span className="font-bold text-lg text-admin-ink">Admin</span>
 
         <nav className="flex items-center gap-2 ml-2">
           <Link
             href="/admin"
-            className="text-sm text-purple-300 hover:text-white transition-colors"
+            className="text-sm font-medium text-admin-muted hover:text-accent transition-colors"
           >
             Cocktails
           </Link>
           <Link
             href="/admin/export"
-            className="text-sm text-purple-300 hover:text-white transition-colors"
+            className="text-sm font-medium text-admin-muted hover:text-accent transition-colors"
           >
             Export
           </Link>
@@ -55,7 +55,7 @@ function AdminHeader() {
         <div className="ml-auto flex items-center gap-3">
           <Link
             href="/bar"
-            className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-sm text-admin-muted hover:text-accent transition-colors"
           >
             <ChevronLeft size={16} />
             Zur Bar
@@ -64,7 +64,7 @@ function AdminHeader() {
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-red-400 transition-colors"
+            className="flex items-center gap-1.5 text-sm text-admin-muted hover:text-red-600 transition-colors"
             title="Abmelden"
           >
             <LogOut size={16} />

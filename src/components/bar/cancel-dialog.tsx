@@ -20,15 +20,15 @@ export function CancelDialog({ onConfirm, onCancel, loading }: CancelDialogProps
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="fixed inset-0 bg-black/70" onClick={onCancel} />
-      <div className="relative w-full max-w-sm bg-[#1a1030] rounded-2xl border border-red-800/60 shadow-2xl p-6 z-10">
+      <div className="relative w-full max-w-sm bg-bar-surface rounded-2xl border border-red-800/60 shadow-2xl p-6 z-10">
         <button
           onClick={onCancel}
-          className="absolute top-4 right-4 text-purple-400 hover:text-white"
+          className="absolute top-4 right-4 text-bar-muted hover:text-white"
         >
           <X size={20} />
         </button>
         <h2 className="text-lg font-bold text-red-300 mb-1">Bestellung stornieren</h2>
-        <p className="text-sm text-purple-300 mb-4">Bitte gib einen Grund an (Pflichtfeld).</p>
+        <p className="text-sm text-bar-muted mb-4">Bitte gib einen Grund an (Pflichtfeld).</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <textarea
@@ -38,13 +38,13 @@ export function CancelDialog({ onConfirm, onCancel, loading }: CancelDialogProps
             required
             rows={3}
             placeholder="Grund für die Stornierung..."
-            className="w-full rounded-lg bg-black/30 border border-purple-700 px-3 py-2 text-white placeholder-purple-500 focus:outline-none focus:border-red-500 resize-none"
+            className="w-full rounded-lg bg-bar-bg/70 border border-bar-border px-3 py-2 text-white placeholder-bar-muted/60 focus:outline-none focus:border-red-500 resize-none"
           />
           <div className="flex gap-3">
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 py-2 rounded-lg border border-purple-700 text-purple-300 hover:bg-purple-800/30 transition-colors"
+              className="flex-1 py-2 rounded-lg border border-bar-border text-bar-muted hover:bg-bar-soft transition-colors"
             >
               Abbrechen
             </button>

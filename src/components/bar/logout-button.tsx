@@ -25,7 +25,7 @@ export function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="p-1.5 rounded-lg text-purple-400 hover:text-white hover:bg-purple-800/30 transition-colors"
+      className="p-1.5 rounded-lg text-bar-muted hover:text-white hover:bg-bar-soft transition-colors"
       title="Abmelden"
     >
       <LogOut size={18} />

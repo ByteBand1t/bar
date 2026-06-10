@@ -81,7 +81,7 @@ function AvailabilityToggle({
       disabled={loading}
       title={isAvailable ? "Verfügbar – klicken zum Deaktivieren" : "Nicht verfügbar – klicken zum Aktivieren"}
       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors disabled:opacity-50 ${
-        isAvailable ? "bg-emerald-500" : "bg-purple-800"
+        isAvailable ? "bg-emerald-500" : "bg-admin-border"
       }`}
     >
       <span
@@ -116,18 +116,18 @@ function SortableCocktailRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-3 bg-[#1a1030] border border-purple-800/30 rounded-xl px-3 py-2.5 hover:border-purple-700/50 transition-colors"
+      className="flex items-center gap-3 bg-admin-surface border border-admin-border rounded-2xl px-3 py-3 shadow-sm hover:border-accent/30 hover:shadow-md transition-colors"
     >
       <button
         {...attributes}
         {...listeners}
-        className="p-1 text-purple-700 hover:text-purple-400 cursor-grab active:cursor-grabbing shrink-0"
+        className="p-1 text-admin-muted hover:text-accent cursor-grab active:cursor-grabbing shrink-0"
       >
         <GripVertical size={18} />
       </button>
 
       {/* Thumbnail */}
-      <div className="w-12 h-12 rounded-lg overflow-hidden bg-purple-900/40 shrink-0 flex items-center justify-center text-xl">
+      <div className="w-12 h-12 rounded-lg overflow-hidden bg-accent-soft shrink-0 flex items-center justify-center text-xl">
         {cocktail.imageFilename ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -143,22 +143,22 @@ function SortableCocktailRow({
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-medium text-white text-sm truncate">{cocktail.name}</span>
-          <span className="text-xs bg-purple-800/50 text-purple-300 px-2 py-0.5 rounded-full shrink-0">
+          <span className="font-medium text-admin-ink text-sm truncate">{cocktail.name}</span>
+          <span className="text-xs bg-accent-soft text-accent px-2 py-0.5 rounded-full shrink-0">
             {cocktail.category}
           </span>
           {cocktail.isArchived && (
-            <span className="text-xs bg-red-900/40 text-red-400 px-2 py-0.5 rounded-full shrink-0">
+            <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full shrink-0">
               Archiviert
             </span>
           )}
           {cocktail.isAlcoholFree && (
-            <span className="text-xs bg-emerald-900/40 text-emerald-400 px-2 py-0.5 rounded-full shrink-0">
+            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full shrink-0">
               Alkoholfrei
             </span>
           )}
         </div>
-        <p className="text-xs text-purple-400 truncate mt-0.5">{cocktail.description}</p>
+        <p className="text-xs text-admin-muted truncate mt-0.5">{cocktail.description}</p>
       </div>
 
       {/* Toggle */}
@@ -174,21 +174,21 @@ function SortableCocktailRow({
       <div className="flex items-center gap-1 shrink-0">
         <Link
           href={`/admin/cocktails/${cocktail.id}`}
-          className="p-1.5 text-purple-400 hover:text-white hover:bg-purple-800/30 rounded-lg transition-colors"
+          className="p-1.5 text-admin-muted hover:text-accent hover:bg-accent-soft rounded-lg transition-colors"
           title="Bearbeiten"
         >
           <Pencil size={15} />
         </Link>
         <button
           onClick={() => onDuplicate(cocktail.id)}
-          className="p-1.5 text-purple-400 hover:text-white hover:bg-purple-800/30 rounded-lg transition-colors"
+          className="p-1.5 text-admin-muted hover:text-accent hover:bg-accent-soft rounded-lg transition-colors"
           title="Duplizieren"
         >
           <Copy size={15} />
         </button>
         <button
           onClick={() => onDelete(cocktail)}
-          className="p-1.5 text-purple-400 hover:text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
+          className="p-1.5 text-admin-muted hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           title="Löschen"
         >
           <Trash2 size={15} />
@@ -323,7 +323,7 @@ export function AdminCocktailList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 size={24} className="animate-spin text-purple-400" />
+        <Loader2 size={24} className="animate-spin text-accent" />
       </div>
     );
   }
@@ -332,10 +332,10 @@ export function AdminCocktailList() {
     <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-xl font-bold text-white">Cocktail-Karte</h1>
+        <h1 className="text-2xl font-bold text-admin-ink">Cocktail-Karte</h1>
         <Link
           href="/admin/cocktails/new"
-          className="flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold rounded-lg transition-colors text-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover text-accent-fg shadow-sm font-semibold rounded-lg transition-colors text-sm"
         >
           <Plus size={16} />
           Neuer Cocktail
@@ -345,12 +345,12 @@ export function AdminCocktailList() {
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-48">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-muted" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Suche nach Name oder Beschreibung…"
-            className="w-full pl-9 pr-3 py-2 text-sm bg-black/30 border border-purple-700/50 rounded-lg text-white placeholder-purple-700 focus:outline-none focus:ring-2 focus:ring-amber-400/30 focus:border-amber-400/50"
+            className="w-full pl-9 pr-3 py-2 text-sm bg-admin-surface border border-admin-border rounded-xl text-admin-ink placeholder-admin-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/50 shadow-sm"
           />
         </div>
         <div className="flex gap-1.5 flex-wrap">
@@ -360,8 +360,8 @@ export function AdminCocktailList() {
               onClick={() => setCategoryFilter(cat)}
               className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
                 categoryFilter === cat
-                  ? "bg-amber-400 border-amber-400 text-black font-semibold"
-                  : "border-purple-700/50 text-purple-300 hover:border-purple-500"
+                  ? "bg-accent border-accent text-accent-fg font-semibold shadow-sm"
+                  : "border-admin-border text-admin-muted hover:border-accent/40 hover:text-accent bg-admin-surface"
               }`}
             >
               {cat}
@@ -372,7 +372,7 @@ export function AdminCocktailList() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 text-purple-600">
+        <div className="text-center py-16 text-admin-muted">
           {search || categoryFilter !== "Alle" ? "Keine Treffer" : "Noch keine Cocktails – leg los!"}
         </div>
       ) : (
@@ -402,20 +402,20 @@ export function AdminCocktailList() {
 
       {/* Delete Confirm Dialog */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1a1030] border border-purple-800/40 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-2">
+        <div className="fixed inset-0 bg-admin-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-admin-surface border border-admin-border rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h2 className="text-lg font-bold text-admin-ink mb-2">
               {deleteTarget._count.orderItems > 0 ? "Cocktail archivieren?" : "Cocktail löschen?"}
             </h2>
             {deleteTarget._count.orderItems > 0 ? (
-              <p className="text-purple-300 text-sm leading-relaxed">
-                <strong className="text-amber-300">{deleteTarget.name}</strong> wurde bereits bestellt
+              <p className="text-admin-muted text-sm leading-relaxed">
+                <strong className="text-accent">{deleteTarget.name}</strong> wurde bereits bestellt
                 und wird daher nur archiviert. Er erscheint nicht mehr in der Karte, bleibt aber für
                 Statistik und Verlauf erhalten.
               </p>
             ) : (
-              <p className="text-purple-300 text-sm">
-                <strong className="text-amber-300">{deleteTarget.name}</strong> wird dauerhaft
+              <p className="text-admin-muted text-sm">
+                <strong className="text-accent">{deleteTarget.name}</strong> wird dauerhaft
                 gelöscht. Dies kann nicht rückgängig gemacht werden.
               </p>
             )}
@@ -423,7 +423,7 @@ export function AdminCocktailList() {
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleteLoading}
-                className="px-4 py-2 text-sm text-purple-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-sm text-admin-muted hover:text-admin-ink transition-colors"
               >
                 Abbrechen
               </button>

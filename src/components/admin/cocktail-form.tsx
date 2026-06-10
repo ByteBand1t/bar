@@ -61,15 +61,15 @@ function SortableIngredientRow({
         type="button"
         {...attributes}
         {...listeners}
-        className="mt-2 p-1 text-purple-600 hover:text-purple-400 cursor-grab active:cursor-grabbing hidden sm:block"
+        className="mt-2 p-1 text-admin-muted hover:text-accent cursor-grab active:cursor-grabbing hidden sm:block"
       >
         <GripVertical size={16} />
       </button>
       <div className="flex sm:hidden flex-col gap-0.5 mt-1">
-        <button type="button" onClick={onMoveUp} className="p-0.5 text-purple-600 hover:text-purple-400">
+        <button type="button" onClick={onMoveUp} className="p-0.5 text-admin-muted hover:text-accent">
           <ChevronUp size={14} />
         </button>
-        <button type="button" onClick={onMoveDown} className="p-0.5 text-purple-600 hover:text-purple-400">
+        <button type="button" onClick={onMoveDown} className="p-0.5 text-admin-muted hover:text-accent">
           <ChevronDown size={14} />
         </button>
       </div>
@@ -132,21 +132,21 @@ function SortableStepRow({
         type="button"
         {...attributes}
         {...listeners}
-        className="mt-2 p-1 text-purple-600 hover:text-purple-400 cursor-grab active:cursor-grabbing hidden sm:block"
+        className="mt-2 p-1 text-admin-muted hover:text-accent cursor-grab active:cursor-grabbing hidden sm:block"
       >
         <GripVertical size={16} />
       </button>
       <div className="flex sm:hidden flex-col gap-0.5 mt-1">
-        <button type="button" onClick={onMoveUp} className="p-0.5 text-purple-600 hover:text-purple-400">
+        <button type="button" onClick={onMoveUp} className="p-0.5 text-admin-muted hover:text-accent">
           <ChevronUp size={14} />
         </button>
-        <button type="button" onClick={onMoveDown} className="p-0.5 text-purple-600 hover:text-purple-400">
+        <button type="button" onClick={onMoveDown} className="p-0.5 text-admin-muted hover:text-accent">
           <ChevronDown size={14} />
         </button>
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs text-purple-400 font-mono">#{index + 1}</span>
+          <span className="text-xs text-admin-muted font-mono">#{index + 1}</span>
         </div>
         <textarea
           {...register(`steps.${index}`)}
@@ -171,15 +171,15 @@ function SortableStepRow({
 }
 
 function inputClass(hasError: boolean) {
-  return `w-full px-3 py-2 bg-black/40 border rounded-lg text-white text-sm placeholder-purple-800 focus:outline-none focus:ring-2 transition-colors ${
+  return `w-full px-3 py-2 bg-admin-surface border rounded-xl text-admin-ink text-sm placeholder-admin-muted focus:outline-none focus:ring-2 transition-colors shadow-sm ${
     hasError
-      ? "border-red-500 focus:ring-red-500/30"
-      : "border-purple-700/50 focus:ring-amber-400/30 focus:border-amber-400/50"
+      ? "border-red-500 focus:ring-red-500/20"
+      : "border-admin-border focus:ring-accent/20 focus:border-accent/50"
   }`;
 }
 
 function labelClass() {
-  return "block text-sm font-medium text-purple-300 mb-1";
+  return "block text-sm font-semibold text-admin-ink mb-1";
 }
 
 export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
@@ -318,7 +318,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Form */}
       <div className="lg:col-span-2 space-y-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 rounded-3xl border border-admin-border bg-admin-surface p-5 shadow-sm">
           {/* Name + Kategorie */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
@@ -330,7 +330,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
               <label className={labelClass()}>Kategorie *</label>
               <select {...register("category")} className={inputClass(!!errors.category)}>
                 {CATEGORIES.map((c) => (
-                  <option key={c} value={c} className="bg-[#1a1030]">
+                  <option key={c} value={c} className="bg-admin-surface">
                     {c}
                   </option>
                 ))}
@@ -386,9 +386,9 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
                       type="checkbox"
                       checked={field.value}
                       onChange={field.onChange}
-                      className="w-4 h-4 accent-amber-400"
+                      className="w-4 h-4 accent-accent"
                     />
-                    <span className="text-sm text-purple-300">Alkoholfrei</span>
+                    <span className="text-sm text-admin-muted">Alkoholfrei</span>
                   </label>
                 )}
               />
@@ -403,9 +403,9 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
                       type="checkbox"
                       checked={field.value}
                       onChange={field.onChange}
-                      className="w-4 h-4 accent-amber-400"
+                      className="w-4 h-4 accent-accent"
                     />
-                    <span className="text-sm text-purple-300">Verfügbar</span>
+                    <span className="text-sm text-admin-muted">Verfügbar</span>
                   </label>
                 )}
               />
@@ -447,7 +447,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
             <button
               type="button"
               onClick={() => appendIngredient({ name: "", amount: "" })}
-              className="mt-2 flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-200 transition-colors"
+              className="mt-2 flex items-center gap-1.5 text-sm text-accent hover:text-accent-hover transition-colors"
             >
               <Plus size={16} />
               Zutat hinzufügen
@@ -489,7 +489,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
             <button
               type="button"
               onClick={() => appendStep("" as never)}
-              className="mt-2 flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-200 transition-colors"
+              className="mt-2 flex items-center gap-1.5 text-sm text-accent hover:text-accent-hover transition-colors"
             >
               <Plus size={16} />
               Schritt hinzufügen
@@ -497,11 +497,11 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-wrap gap-3 pt-2 border-t border-purple-800/30">
+          <div className="flex flex-wrap gap-3 pt-2 border-t border-admin-border">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-5 py-2.5 bg-amber-400 hover:bg-amber-300 disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold rounded-lg transition-colors"
+              className="flex items-center gap-2 px-5 py-2.5 bg-accent hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-accent-fg shadow-sm font-semibold rounded-lg transition-colors"
             >
               {isSubmitting ? (
                 <Loader2 size={16} className="animate-spin" />
@@ -516,7 +516,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
               type="button"
               disabled={isSubmitting}
               onClick={() => handleSubmit(onSubmitAndContinue)()}
-              className="flex items-center gap-2 px-5 py-2.5 bg-purple-700/40 hover:bg-purple-600/40 disabled:opacity-50 text-white font-medium rounded-lg transition-colors border border-purple-600/40"
+              className="flex items-center gap-2 px-5 py-2.5 bg-admin-surface hover:bg-accent-soft disabled:opacity-50 text-admin-ink font-medium rounded-lg transition-colors border border-admin-border"
             >
               Speichern & weiter bearbeiten
             </button>
@@ -524,7 +524,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
             <button
               type="button"
               onClick={handleCancel}
-              className="px-5 py-2.5 text-purple-400 hover:text-white transition-colors"
+              className="px-5 py-2.5 text-admin-muted hover:text-admin-ink transition-colors"
             >
               Abbrechen
             </button>
@@ -535,7 +535,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
       {/* Preview Panel (desktop only) */}
       <div className="hidden lg:block">
         <div className="sticky top-6">
-          <p className="text-xs text-purple-500 mb-3 uppercase tracking-wide font-medium">Vorschau</p>
+          <p className="text-xs text-admin-muted mb-3 uppercase tracking-wide font-medium">Vorschau</p>
           <div className="pointer-events-none">
             <CocktailCard
               cocktail={{

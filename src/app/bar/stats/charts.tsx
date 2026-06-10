@@ -13,8 +13,15 @@ import {
   Legend,
 } from "recharts";
 
-const AXIS = { stroke: "#7060a0", fontSize: 11 };
-const GRID = "#2d2050";
+const AXIS = { stroke: "#9aa4b2", fontSize: 11 };
+const GRID = "#2b3038";
+const TOOLTIP = {
+  background: "#17191f",
+  border: "1px solid #2b3038",
+  borderRadius: 12,
+  color: "#f4f6f8",
+  fontSize: 12,
+};
 
 export interface TimePoint {
   bucketStart: string;
@@ -37,12 +44,12 @@ export function OrdersOverTimeChart({ data }: { data: TimePoint[] }) {
       <AreaChart data={points} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
         <defs>
           <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#d4af37" stopOpacity={0.5} />
-            <stop offset="100%" stopColor="#d4af37" stopOpacity={0} />
+            <stop offset="0%" stopColor="#f5523c" stopOpacity={0.5} />
+            <stop offset="100%" stopColor="#f5523c" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.5} />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
+            <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.5} />
+            <stop offset="100%" stopColor="#60a5fa" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
@@ -50,24 +57,21 @@ export function OrdersOverTimeChart({ data }: { data: TimePoint[] }) {
         <YAxis allowDecimals={false} {...AXIS} />
         <Tooltip
           contentStyle={{
-            background: "#1a1030",
-            border: "1px solid #2d2050",
-            borderRadius: 8,
-            fontSize: 12,
+            ...TOOLTIP,
           }}
         />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Area
           type="monotone"
           dataKey="Bestellungen"
-          stroke="#d4af37"
+          stroke="#f5523c"
           fill="url(#g1)"
           strokeWidth={2}
         />
         <Area
           type="monotone"
           dataKey="Drinks"
-          stroke="#8b5cf6"
+          stroke="#60a5fa"
           fill="url(#g2)"
           strokeWidth={2}
         />
@@ -98,15 +102,12 @@ export function TopCocktailsChart({
           tickFormatter={(v: string) => (v.length > 16 ? v.slice(0, 15) + "…" : v)}
         />
         <Tooltip
-          cursor={{ fill: "#2d205066" }}
+          cursor={{ fill: "#222832" }}
           contentStyle={{
-            background: "#1a1030",
-            border: "1px solid #2d2050",
-            borderRadius: 8,
-            fontSize: 12,
+            ...TOOLTIP,
           }}
         />
-        <Bar dataKey="totalQty" name="Drinks" fill="#d4af37" radius={[0, 4, 4, 0]} />
+        <Bar dataKey="totalQty" name="Drinks" fill="#f5523c" radius={[0, 4, 4, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -124,15 +125,12 @@ export function WaitDistChart({
         <XAxis dataKey="bucket" {...AXIS} />
         <YAxis allowDecimals={false} {...AXIS} />
         <Tooltip
-          cursor={{ fill: "#2d205066" }}
+          cursor={{ fill: "#222832" }}
           contentStyle={{
-            background: "#1a1030",
-            border: "1px solid #2d2050",
-            borderRadius: 8,
-            fontSize: 12,
+            ...TOOLTIP,
           }}
         />
-        <Bar dataKey="count" name="Bestellungen" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="count" name="Bestellungen" fill="#60a5fa" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

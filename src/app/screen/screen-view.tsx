@@ -50,17 +50,17 @@ export function ScreenView({ initial }: { initial: ScreenData }) {
   }, [refetch]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0a0715] text-white flex flex-col">
-      <div className="screen-glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.18),transparent_60%)]" />
+    <div className="relative min-h-screen overflow-hidden bg-bar-bg text-bar-ink flex flex-col">
+      <div className="screen-glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(245,82,60,0.18),transparent_60%)]" />
 
       <header className="relative pt-10 pb-4 text-center">
-        <h1 className="text-5xl font-bold text-amber-300 tracking-tight">
+        <h1 className="text-5xl font-bold text-accent tracking-tight">
           🍹 Franzis Geburtstags-Bar
         </h1>
-        <p className="mt-3 text-xl text-purple-300">
-          <span className="text-amber-200 font-semibold">{data.totalDrinks}</span>{" "}
+        <p className="mt-3 text-xl text-bar-muted">
+          <span className="text-bar-ink font-semibold">{data.totalDrinks}</span>{" "}
           Drinks ausgegeben ·{" "}
-          <span className="text-amber-200 font-semibold">
+          <span className="text-bar-ink font-semibold">
             {fmtWait(data.avgWaitTimeSec)}
           </span>{" "}
           Ø Wartezeit · {data.activeOrders} aktiv
@@ -68,12 +68,12 @@ export function ScreenView({ initial }: { initial: ScreenData }) {
       </header>
 
       <main className="relative flex-1 flex flex-col items-center justify-center gap-4 px-8">
-        <h2 className="text-2xl uppercase tracking-widest text-purple-400">
+        <h2 className="text-2xl uppercase tracking-widest text-bar-muted">
           Bestenliste
         </h2>
         <ol className="w-full max-w-3xl space-y-3">
           {data.topGuests.length === 0 && (
-            <li className="text-center text-purple-500 text-2xl py-12">
+            <li className="text-center text-bar-muted/60 text-2xl py-12">
               Noch keine Bestellungen – sei der/die Erste!
             </li>
           )}
@@ -82,19 +82,19 @@ export function ScreenView({ initial }: { initial: ScreenData }) {
               key={g.guestName + i}
               className={`flex items-center gap-5 rounded-2xl px-7 py-4 border ${
                 i === 0
-                  ? "bg-amber-500/15 border-amber-500/50"
+                  ? "bg-accent/15 border-accent/40 shadow-lg shadow-accent/5"
                   : i < 3
-                    ? "bg-purple-800/20 border-purple-600/40"
-                    : "bg-white/[0.03] border-white/10"
+                    ? "bg-bar-surface-2/80 border-bar-border"
+                    : "bg-bar-surface/70 border-bar-border"
               }`}
             >
               <span className="text-4xl w-14 text-center">
-                {MEDALS[i] ?? <span className="text-purple-400">{i + 1}</span>}
+                {MEDALS[i] ?? <span className="text-bar-muted">{i + 1}</span>}
               </span>
-              <span className="flex-1 text-3xl font-semibold text-amber-100">
+              <span className="flex-1 text-3xl font-semibold text-bar-ink">
                 {g.guestName}
               </span>
-              <span className="text-3xl font-bold text-amber-300">
+              <span className="text-3xl font-bold text-accent">
                 {g.drinkCount}
               </span>
             </li>
@@ -104,11 +104,11 @@ export function ScreenView({ initial }: { initial: ScreenData }) {
 
       <footer className="relative h-16 border-t border-white/10 flex items-center px-8 overflow-hidden">
         {tick ? (
-          <p key={tick} className="ticker-in text-xl text-purple-200">
-            <span className="text-amber-300">Frisch serviert:</span> {tick}
+          <p key={tick} className="ticker-in text-xl text-bar-ink">
+            <span className="text-accent">Frisch serviert:</span> {tick}
           </p>
         ) : (
-          <div className="flex gap-8 text-lg text-purple-400">
+          <div className="flex gap-8 text-lg text-bar-muted">
             {data.recent.map((r) => (
               <span key={r.id}>
                 {r.guestName} · {r.drink}

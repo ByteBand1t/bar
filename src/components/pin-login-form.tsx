@@ -48,16 +48,28 @@ export function PinLoginForm({ role, defaultNext, title, subtitle }: PinLoginFor
     }
   };
 
+  const isAdmin = role === "admin";
+  const pageClass = isAdmin
+    ? "min-h-screen flex items-center justify-center bg-admin-bg p-4 text-admin-ink"
+    : "min-h-screen flex items-center justify-center bg-bar-bg p-4 text-bar-ink";
+  const cardClass = isAdmin
+    ? "bg-admin-surface border border-admin-border rounded-3xl p-8 shadow-xl shadow-slate-200/70"
+    : "bg-bar-surface border border-bar-border rounded-3xl p-8 shadow-2xl shadow-black/30";
+  const mutedClass = isAdmin ? "text-admin-muted" : "text-bar-muted";
+  const inputClass = isAdmin
+    ? "w-full text-center text-3xl tracking-[0.5em] px-4 py-4 bg-admin-surface border border-admin-border rounded-2xl text-admin-ink placeholder-admin-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 transition-colors shadow-sm"
+    : "w-full text-center text-3xl tracking-[0.5em] px-4 py-4 bg-bar-bg/80 border border-bar-border rounded-2xl text-bar-ink placeholder-bar-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-colors";
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f0a1e] p-4">
+    <div className={pageClass}>
       <div className="w-full max-w-sm">
-        <div className="bg-[#1a1030] border border-purple-800/40 rounded-2xl p-8 shadow-2xl shadow-purple-900/20">
-          <h1 className="text-2xl font-bold text-white mb-1">{title}</h1>
-          {subtitle && <p className="text-sm text-purple-400 mb-6">{subtitle}</p>}
+        <div className={cardClass}>
+          <h1 className="text-2xl font-bold mb-1">{title}</h1>
+          {subtitle && <p className={`text-sm mb-6 ${mutedClass}`}>{subtitle}</p>}
 
           <form onSubmit={handleSubmit} className="space-y-4 mt-6">
             <div>
-              <label htmlFor="pin" className="block text-sm font-medium text-purple-300 mb-2">
+              <label htmlFor="pin" className={`block text-sm font-medium mb-2 ${mutedClass}`}>
                 PIN
               </label>
               <input
@@ -72,7 +84,7 @@ export function PinLoginForm({ role, defaultNext, title, subtitle }: PinLoginFor
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 placeholder="••••"
-                className="w-full text-center text-3xl tracking-[0.5em] px-4 py-4 bg-black/40 border border-purple-700/50 rounded-xl text-white placeholder-purple-800 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 transition-colors"
+                className={inputClass}
                 disabled={loading}
               />
             </div>
@@ -80,7 +92,7 @@ export function PinLoginForm({ role, defaultNext, title, subtitle }: PinLoginFor
             <button
               type="submit"
               disabled={loading || pin.length === 0}
-              className="w-full py-3 px-6 bg-amber-400 hover:bg-amber-300 disabled:bg-amber-400/30 disabled:cursor-not-allowed text-black font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 px-6 bg-accent hover:bg-accent-hover disabled:bg-accent/30 disabled:cursor-not-allowed text-accent-fg font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

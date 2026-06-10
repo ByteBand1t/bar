@@ -29,7 +29,7 @@ const WaitDistChart = dynamic(
 
 function ChartSkeleton() {
   return (
-    <div className="h-[220px] flex items-center justify-center text-purple-600 text-sm">
+    <div className="h-[220px] flex items-center justify-center text-bar-muted/50 text-sm">
       Lädt Diagramm…
     </div>
   );
@@ -88,12 +88,12 @@ function Kpi({
   accent?: string;
 }) {
   return (
-    <div className="bg-[#1a1030] border border-purple-800/40 rounded-xl p-4 flex flex-col gap-1">
-      <div className={`flex items-center gap-1.5 text-xs ${accent ?? "text-purple-400"}`}>
+    <div className="bg-bar-surface border border-bar-border shadow-lg shadow-black/10 rounded-xl p-4 flex flex-col gap-1">
+      <div className={`flex items-center gap-1.5 text-xs ${accent ?? "text-bar-muted"}`}>
         {icon}
         {label}
       </div>
-      <div className="text-2xl font-bold text-amber-200">{value}</div>
+      <div className="text-2xl font-bold text-bar-ink">{value}</div>
     </div>
   );
 }
@@ -109,9 +109,9 @@ function Tile({
 }) {
   return (
     <div
-      className={`bg-[#120d20] border border-purple-800/40 rounded-2xl p-4 ${className}`}
+      className={`bg-bar-surface border border-bar-border shadow-lg shadow-black/10 rounded-2xl p-4 ${className}`}
     >
-      <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-3">
+      <h3 className="text-sm font-semibold text-accent uppercase tracking-wider mb-3">
         {title}
       </h3>
       {children}
@@ -174,16 +174,16 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
       : 0;
 
   return (
-    <div className="min-h-screen p-4 max-w-6xl mx-auto">
+    <div className="min-h-screen bg-bar-bg p-4 text-bar-ink max-w-6xl mx-auto">
       <header className="flex items-center gap-3 mb-4 flex-wrap">
         <Link
           href="/bar"
-          className="p-2 rounded-full text-purple-300 hover:bg-purple-800/50"
+          className="p-2 rounded-full text-bar-muted hover:bg-bar-soft hover:text-bar-ink"
         >
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-xl font-bold text-amber-300">Statistik</h1>
-        <div className="ml-auto flex items-center gap-2 text-xs text-purple-400">
+        <h1 className="text-xl font-bold text-bar-ink">Statistik</h1>
+        <div className="ml-auto flex items-center gap-2 text-xs text-bar-muted">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             Live
@@ -206,8 +206,8 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
             onClick={() => selectRange(r.key)}
             className={`text-xs px-3 py-1.5 rounded-full border ${
               range === r.key
-                ? "bg-amber-500 text-slate-900 border-amber-500"
-                : "bg-purple-800/40 text-purple-300 border-purple-700"
+                ? "bg-accent text-accent-fg border-accent"
+                : "bg-bar-surface text-bar-muted border-bar-border hover:border-accent/40"
             }`}
           >
             {r.label}
@@ -234,8 +234,8 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
                 onClick={() => selectBucket(b)}
                 className={`text-xs px-2.5 py-1 rounded-full border ${
                   bucket === b
-                    ? "bg-purple-600 text-white border-purple-600"
-                    : "bg-purple-800/40 text-purple-300 border-purple-700"
+                    ? "bg-accent text-accent-fg border-accent"
+                    : "bg-bar-surface text-bar-muted border-bar-border hover:border-accent/40"
                 }`}
               >
                 {b} Min
@@ -243,7 +243,7 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
             ))}
           </div>
           {data.ordersOverTime.length === 0 ? (
-            <p className="text-sm text-purple-600 py-10 text-center">
+            <p className="text-sm text-bar-muted/50 py-10 text-center">
               Noch keine Daten
             </p>
           ) : (
@@ -253,7 +253,7 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
 
         <Tile title="Top Cocktails">
           {data.topCocktails.length === 0 ? (
-            <p className="text-sm text-purple-600 py-10 text-center">
+            <p className="text-sm text-bar-muted/50 py-10 text-center">
               Noch keine Daten
             </p>
           ) : (
@@ -263,13 +263,13 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
 
         <Tile title="Bestenliste Gäste">
           {data.topGuests.length === 0 ? (
-            <p className="text-sm text-purple-600 py-10 text-center">
+            <p className="text-sm text-bar-muted/50 py-10 text-center">
               Noch keine Daten
             </p>
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-purple-500 text-xs uppercase">
+                <tr className="text-bar-muted/100 text-xs uppercase">
                   <th className="text-left py-1.5 w-10">#</th>
                   <th className="text-left">Name</th>
                   <th className="text-right">Best.</th>
@@ -280,12 +280,12 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
                 {data.topGuests.map((g, i) => (
                   <tr
                     key={g.guestName + i}
-                    className="border-t border-purple-900/40"
+                    className="border-t border-bar-border"
                   >
                     <td className="py-1.5">{MEDALS[i] ?? i + 1}</td>
-                    <td className="text-amber-200 font-medium">{g.guestName}</td>
-                    <td className="text-right text-purple-300">{g.orderCount}</td>
-                    <td className="text-right text-white font-semibold">
+                    <td className="text-bar-ink font-medium">{g.guestName}</td>
+                    <td className="text-right text-bar-muted">{g.orderCount}</td>
+                    <td className="text-right text-bar-ink font-semibold">
                       {g.drinkCount}
                     </td>
                   </tr>
@@ -301,7 +301,7 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
 
         <Tile title="Stornos">
           {data.cancels.totalCancelled === 0 ? (
-            <p className="text-sm text-emerald-400/80 py-6 text-center">
+            <p className="text-sm text-emerald-400/100 py-6 text-center">
               Bisher keine Stornos – sauber! 🎉
             </p>
           ) : (
@@ -309,9 +309,9 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
               {data.cancels.byReason.map((r) => (
                 <li
                   key={r.reason}
-                  className="flex items-center justify-between text-sm border-b border-purple-900/40 pb-1.5"
+                  className="flex items-center justify-between text-sm border-b border-bar-border pb-1.5"
                 >
-                  <span className="text-purple-200">{r.reason}</span>
+                  <span className="text-bar-ink">{r.reason}</span>
                   <span className="text-red-300 font-mono font-semibold">
                     {r.count}
                   </span>
@@ -322,7 +322,7 @@ export function StatsDashboard({ initial }: { initial: StatsData }) {
         </Tile>
       </div>
 
-      <p className="text-center text-xs text-purple-700 mt-6 flex items-center justify-center gap-1">
+      <p className="text-center text-xs text-bar-muted/50 mt-6 flex items-center justify-center gap-1">
         <Crown size={12} /> Franzis Geburtstags-Bar
       </p>
     </div>
