@@ -37,12 +37,18 @@ export function GuestLive() {
       es = new EventSource("/api/guest/stream");
       es.addEventListener("bar.state", onState);
       es.addEventListener("bar.state_changed", onState);
-      es.addEventListener("cocktail.availability_changed", (e: MessageEvent) => {
-        try {
-          const d = JSON.parse(e.data) as { id: string; isAvailable: boolean };
-          setAvailability(d.id, d.isAvailable);
-        } catch {}
-      });
+      es.addEventListener(
+        "cocktail.availability_changed",
+        (e: MessageEvent) => {
+          try {
+            const d = JSON.parse(e.data) as {
+              id: string;
+              isAvailable: boolean;
+            };
+            setAvailability(d.id, d.isAvailable);
+          } catch {}
+        },
+      );
       es.onopen = () => {
         attempts = 0;
       };
@@ -66,10 +72,7 @@ export function GuestLive() {
 
   useEffect(() => {
     if (!barStateLoaded) return;
-    if (
-      prevAccepting.current === false &&
-      barState.acceptingOrders === true
-    ) {
+    if (prevAccepting.current === false && barState.acceptingOrders === true) {
       setFlash(true);
       const t = setTimeout(() => setFlash(false), 4000);
       prevAccepting.current = barState.acceptingOrders;
@@ -83,18 +86,21 @@ export function GuestLive() {
   if (!barState.acceptingOrders) {
     const until = formatUntil(barState.pauseUntil);
     return (
-      <div className="sticky top-0 z-40 bg-red-900 border-b-2 border-red-600 px-4 py-3 shadow-lg">
-        <div className="max-w-2xl mx-auto flex items-start gap-3">
-          <PauseCircle size={22} className="text-red-300 shrink-0 mt-0.5" />
+      <div className="sticky top-0 z-40 border-b border-guest-danger-border bg-guest-danger-bg px-4 py-3 shadow-[var(--shadow-guest-card)]">
+        <div className="mx-auto flex max-w-2xl items-start gap-3">
+          <PauseCircle
+            size={22}
+            className="mt-0.5 shrink-0 text-guest-danger-ink"
+          />
           <div>
-            <p className="font-bold text-red-100 text-sm">
+            <p className="text-sm font-bold text-guest-danger-ink">
               Bestellannahme gerade pausiert
             </p>
-            <p className="text-red-200 text-sm mt-0.5">
+            <p className="mt-0.5 text-sm text-guest-danger-ink">
               {barState.pauseMessage ?? "Wir kommen gleich wieder!"}
             </p>
             {until && (
-              <p className="text-red-300 text-xs mt-1">
+              <p className="mt-1 text-xs font-medium text-guest-danger-ink">
                 Voraussichtlich bis {until} Uhr
               </p>
             )}
@@ -106,10 +112,10 @@ export function GuestLive() {
 
   if (flash) {
     return (
-      <div className="sticky top-0 z-40 bg-emerald-800 border-b-2 border-emerald-500 px-4 py-2.5 shadow-lg">
-        <div className="max-w-2xl mx-auto flex items-center gap-2 justify-center">
-          <CheckCircle2 size={18} className="text-emerald-300" />
-          <p className="font-semibold text-emerald-100 text-sm">
+      <div className="sticky top-0 z-40 border-b border-guest-success-border bg-guest-success-bg px-4 py-2.5 shadow-[var(--shadow-guest-card)]">
+        <div className="mx-auto flex max-w-2xl items-center justify-center gap-2">
+          <CheckCircle2 size={18} className="text-guest-success-ink" />
+          <p className="text-sm font-semibold text-guest-success-ink">
             Bestellannahme läuft wieder!
           </p>
         </div>

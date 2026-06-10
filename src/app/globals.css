@@ -14,16 +14,25 @@
 
   /* Guest light theme — bright, modern, food-delivery style.
      Used only by the guest pages (/, /cart, /status). */
-  --color-guest-bg: #f6f6f4;        /* warm off-white page background */
-  --color-guest-surface: #ffffff;   /* white cards / sheets */
-  --color-guest-ink: #1f1d2b;       /* near-black text */
-  --color-guest-muted: #6b6b76;     /* muted secondary text */
-  --color-guest-border: #ececea;    /* subtle hairline borders */
-  --color-accent: #f5523c;          /* coral — friendly, appetizing accent */
-  --color-accent-hover: #e0402b;    /* darker coral for hover/active */
-  --color-accent-fg: #ffffff;       /* text/icon on accent */
-  --color-accent-soft: #fdeee9;     /* light coral tint for soft highlights */
-
+  --color-guest-bg: #f6f6f4; /* warm off-white page background */
+  --color-guest-surface: #ffffff; /* white cards / sheets */
+  --color-guest-ink: #1f1d2b; /* near-black text */
+  --color-guest-muted: #6b6b76; /* muted secondary text */
+  --color-guest-border: #ececea; /* subtle hairline borders */
+  --color-guest-input: #fffaf6; /* warm input background on guest forms */
+  --color-guest-placeholder: #8a8792; /* readable but understated form hints */
+  --color-guest-success-bg: #ecfdf5;
+  --color-guest-success-border: #a7f3d0;
+  --color-guest-success-ink: #047857;
+  --color-guest-danger-bg: #fff1f2;
+  --color-guest-danger-border: #fecdd3;
+  --color-guest-danger-ink: #be123c;
+  --color-accent: #f5523c; /* coral — friendly, appetizing accent */
+  --color-accent-hover: #e0402b; /* darker coral for hover/active */
+  --color-accent-fg: #ffffff; /* text/icon on accent */
+  --color-accent-soft: #fdeee9; /* light coral tint for soft highlights */
+  --shadow-guest-card: 0 14px 35px rgba(31, 29, 43, 0.08);
+  --shadow-guest-button: 0 10px 22px rgba(245, 82, 60, 0.24);
 
   /* Shared light admin theme — reuses guest surfaces and accent tokens. */
   --color-admin-bg: var(--color-guest-bg);
@@ -57,7 +66,10 @@ html {
 body {
   background-color: var(--color-guest-bg);
   color: var(--color-guest-ink);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -71,8 +83,14 @@ body {
 
 /* Gentle attention pulse for very long-waiting orders (1x every ~5s) */
 @keyframes stale-pulse {
-  0%, 86%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-  92% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.45); }
+  0%,
+  86%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+  92% {
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.45);
+  }
 }
 .stale-order {
   animation: stale-pulse 5s ease-in-out infinite;
@@ -80,8 +98,13 @@ body {
 
 /* Subtle gold shimmer for the party screen */
 @keyframes screen-glow {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 .screen-glow {
   animation: screen-glow 8s ease-in-out infinite;
@@ -89,8 +112,14 @@ body {
 
 /* Party-screen ticker entrance */
 @keyframes ticker-in {
-  from { transform: translateY(12px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 .ticker-in {
   animation: ticker-in 0.5s ease-out;

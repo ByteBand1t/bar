@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Order } from "@/types/cocktail";
+import { cn } from "@/lib/utils";
 
 const STATUS_LABELS: Record<string, string> = {
   new: "Neu – wartet auf die Bar",
@@ -13,6 +14,16 @@ const STATUS_LABELS: Record<string, string> = {
   ready: "Fertig – abholbereit!",
   completed: "Abgeholt",
   cancelled: "Abgebrochen",
+};
+
+const GUEST_BADGE_CLASSES: Record<BadgeVariant, string> = {
+  new: "bg-guest-bg text-guest-ink ring-1 ring-guest-border",
+  in_progress: "bg-accent-soft text-accent-hover ring-1 ring-accent-soft",
+  ready:
+    "bg-guest-success-bg text-guest-success-ink ring-1 ring-guest-success-border",
+  completed: "bg-guest-bg text-guest-muted ring-1 ring-guest-border",
+  cancelled:
+    "bg-guest-danger-bg text-guest-danger-ink ring-1 ring-guest-danger-border",
 };
 
 export default function StatusPage() {
@@ -30,9 +41,14 @@ export default function StatusPage() {
       setLoading(false);
       setError(null);
 
-      if (prevStatusRef.current !== null && prevStatusRef.current !== data.status) {
+      if (
+        prevStatusRef.current !== null &&
+        prevStatusRef.current !== data.status
+      ) {
         if (data.status === "ready") {
-          try { navigator.vibrate([200, 100, 200]); } catch {}
+          try {
+            navigator.vibrate([200, 100, 200]);
+          } catch {}
           if (Notification.permission === "granted") {
             new Notification("Dein Drink ist fertig! 🍹", {
               body: "Komm zur Bar und hol ihn ab!",
@@ -47,7 +63,12 @@ export default function StatusPage() {
       handleOrder(JSON.parse(e.data));
     });
 
-    const eventTypes = ["order.created", "order.updated", "order.cancelled", "order.completed"];
+    const eventTypes = [
+      "order.created",
+      "order.updated",
+      "order.cancelled",
+      "order.completed",
+    ];
     eventTypes.forEach((type) => {
       es.addEventListener(type, (e: MessageEvent) => {
         handleOrder(JSON.parse(e.data));
@@ -66,9 +87,9 @@ export default function StatusPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-dvh">
-        <div className="text-center text-purple-400">
-          <div className="w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+      <div className="flex min-h-dvh items-center justify-center bg-guest-bg">
+        <div className="text-center text-guest-muted">
+          <div className="mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
           <p>Lade Bestellung...</p>
         </div>
       </div>
@@ -77,11 +98,13 @@ export default function StatusPage() {
 
   if (error || !order) {
     return (
-      <div className="flex items-center justify-center min-h-dvh px-4">
-        <div className="text-center">
-          <div className="text-4xl mb-3">😕</div>
-          <p className="text-red-400 mb-4">{error ?? "Bestellung nicht gefunden"}</p>
-          <Link href="/" className="text-amber-400 underline">
+      <div className="flex min-h-dvh items-center justify-center bg-guest-bg px-4">
+        <div className="rounded-2xl border border-guest-border bg-guest-surface p-6 text-center shadow-[var(--shadow-guest-card)]">
+          <div className="mb-3 text-4xl">😕</div>
+          <p className="mb-4 text-guest-danger-ink">
+            {error ?? "Bestellung nicht gefunden"}
+          </p>
+          <Link href="/" className="font-medium text-accent underline">
             Zurück zur Startseite
           </Link>
         </div>
@@ -95,35 +118,41 @@ export default function StatusPage() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-[#0f0a1e]/90 backdrop-blur-md border-b border-purple-900/50 px-4 py-3">
+      <header className="sticky top-0 z-30 border-b border-guest-border bg-guest-surface/85 px-4 py-3 backdrop-blur-md">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <Link
             href="/"
-            className="p-2 rounded-full text-purple-300 hover:bg-purple-800/50 transition-colors"
+            className="rounded-full p-2 text-guest-ink transition-colors hover:bg-accent-soft hover:text-accent"
           >
             <ArrowLeft size={20} />
           </Link>
-          <h1 className="text-lg font-bold text-amber-300">Bestellstatus</h1>
+          <h1 className="text-lg font-bold text-guest-ink">Bestellstatus</h1>
           <div className="ml-auto flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-purple-400">Live</span>
+            <span className="text-xs font-medium text-guest-muted">Live</span>
           </div>
         </div>
       </header>
 
       <main className="max-w-2xl mx-auto w-full px-4 pb-8">
         {isReady && (
-          <div className="mt-4 rounded-2xl bg-emerald-900/30 border border-emerald-600 p-6 text-center">
-            <div className="text-5xl mb-3">🍹</div>
-            <h2 className="text-xl font-bold text-emerald-300">Dein Getränk ist fertig!</h2>
-            <p className="text-emerald-200 mt-2">Komm zur Bar und hol es ab!</p>
+          <div className="mt-4 rounded-2xl border border-guest-success-border bg-guest-success-bg p-6 text-center shadow-[var(--shadow-guest-card)]">
+            <div className="mb-3 text-5xl">🍹</div>
+            <h2 className="text-xl font-bold text-guest-success-ink">
+              Dein Getränk ist fertig!
+            </h2>
+            <p className="mt-2 text-sm font-medium text-guest-success-ink">
+              Komm zur Bar und hol es ab!
+            </p>
           </div>
         )}
 
         {isCancelled && (
-          <div className="mt-4 rounded-2xl bg-red-900/30 border border-red-700 p-5">
-            <h2 className="text-lg font-bold text-red-300 mb-1">Bestellung abgebrochen</h2>
-            <p className="text-red-200 text-sm">
+          <div className="mt-4 rounded-2xl border border-guest-danger-border bg-guest-danger-bg p-5 shadow-[var(--shadow-guest-card)]">
+            <h2 className="mb-1 text-lg font-bold text-guest-danger-ink">
+              Bestellung abgebrochen
+            </h2>
+            <p className="text-sm text-guest-danger-ink">
               {order.cancelReason
                 ? `Grund: ${order.cancelReason}`
                 : "Die Bar hat die Bestellung leider abgebrochen. Du kannst gerne eine neue aufgeben!"}
@@ -132,19 +161,31 @@ export default function StatusPage() {
         )}
 
         <div
-          className={`mt-4 bg-[#1a1030] rounded-2xl border p-5 ${
-            isReady ? "border-emerald-700" : isCancelled ? "border-red-800" : "border-purple-800/50"
-          }`}
+          className={cn(
+            "mt-4 rounded-2xl border bg-guest-surface p-5 shadow-[var(--shadow-guest-card)]",
+            isReady
+              ? "border-guest-success-border"
+              : isCancelled
+                ? "border-guest-danger-border"
+                : "border-guest-border",
+          )}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-sm text-purple-400">Bestellung für</p>
-              <p className="font-bold text-amber-200 text-lg">{order.guestName}</p>
+              <p className="text-sm text-guest-muted">Bestellung für</p>
+              <p className="text-lg font-bold text-guest-ink">
+                {order.guestName}
+              </p>
               {order.guestTag && (
-                <p className="text-sm text-purple-300 mt-0.5">📍 {order.guestTag}</p>
+                <p className="mt-0.5 text-sm text-guest-muted">
+                  📍 {order.guestTag}
+                </p>
               )}
             </div>
-            <Badge variant={order.status as BadgeVariant}>
+            <Badge
+              variant={order.status as BadgeVariant}
+              className={GUEST_BADGE_CLASSES[order.status as BadgeVariant]}
+            >
               {STATUS_LABELS[order.status] ?? order.status}
             </Badge>
           </div>
@@ -155,26 +196,31 @@ export default function StatusPage() {
             </div>
           )}
 
-          <h3 className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-guest-ink">
             Bestellte Getränke
           </h3>
           <ul className="space-y-2">
             {order.items.map((item) => (
-              <li key={item.id} className="flex items-center justify-between text-sm">
-                <span className="text-purple-200">{item.cocktail.name}</span>
-                <span className="font-mono text-amber-300">×{item.quantity}</span>
+              <li
+                key={item.id}
+                className="flex items-center justify-between text-sm"
+              >
+                <span className="text-guest-ink">{item.cocktail.name}</span>
+                <span className="font-mono font-semibold text-accent">
+                  ×{item.quantity}
+                </span>
               </li>
             ))}
           </ul>
 
           {order.notes && (
-            <div className="mt-3 pt-3 border-t border-purple-800/50">
-              <p className="text-xs text-purple-400">Notiz: {order.notes}</p>
+            <div className="mt-3 pt-3 border-t border-guest-border">
+              <p className="text-xs text-guest-muted">Notiz: {order.notes}</p>
             </div>
           )}
 
-          <div className="mt-3 pt-3 border-t border-purple-800/50">
-            <p className="text-xs text-purple-500">
+          <div className="mt-3 pt-3 border-t border-guest-border">
+            <p className="text-xs text-guest-muted">
               {new Date(order.createdAt).toLocaleTimeString("de-DE", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -185,7 +231,10 @@ export default function StatusPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-amber-400 hover:text-amber-300 font-medium underline">
+          <Link
+            href="/"
+            className="font-medium text-accent underline hover:text-accent-hover"
+          >
             Noch ein Drink bestellen →
           </Link>
         </div>
@@ -209,13 +258,15 @@ function StatusProgress({ status }: { status: string }) {
       {steps.map((step, i) => (
         <div key={step.key} className="flex items-center flex-1">
           <div
-            className={`h-1.5 flex-1 rounded-full ${i <= currentIdx ? "bg-amber-500" : "bg-purple-900"}`}
+            className={`h-1.5 flex-1 rounded-full ${i <= currentIdx ? "bg-accent" : "bg-guest-border"}`}
           />
           <div className="text-center">
             <div
-              className={`mx-1 w-2.5 h-2.5 rounded-full ${i <= currentIdx ? "bg-amber-400" : "bg-purple-800"}`}
+              className={`mx-1 w-2.5 h-2.5 rounded-full ${i <= currentIdx ? "bg-accent" : "bg-guest-border"}`}
             />
-            <p className={`text-[10px] mt-0.5 ${i <= currentIdx ? "text-amber-300" : "text-purple-600"}`}>
+            <p
+              className={`text-[10px] mt-0.5 ${i <= currentIdx ? "text-accent-hover" : "text-guest-muted"}`}
+            >
               {step.label}
             </p>
           </div>

@@ -54,7 +54,9 @@ export default async function HomePage({
             <h1 className="text-lg font-bold leading-tight text-guest-ink">
               Franzis Geburtstags-Bar <span aria-hidden>🍹</span>
             </h1>
-            <p className="text-xs text-guest-muted">{cocktails.length} Getränke zur Auswahl</p>
+            <p className="text-xs text-guest-muted">
+              {cocktails.length} Getränke zur Auswahl
+            </p>
           </div>
           <CartIconLink />
         </div>
@@ -78,7 +80,7 @@ export default async function HomePage({
       </main>
 
       <CartFab />
-      <Toaster />
+      <Toaster theme="guest" />
     </div>
   );
 }
