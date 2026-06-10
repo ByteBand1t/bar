@@ -54,7 +54,7 @@ function timerColor(status: string, seconds: number): string {
     if (m >= 2) return "text-orange-400";
     return "text-emerald-400";
   }
-  return "text-purple-400";
+  return "text-bar-muted";
 }
 
 export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardProps) {
@@ -111,22 +111,22 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
           highlight ? "ring-2 ring-amber-400 scale-[1.01]" : ""
         } ${
           isStale
-            ? "bg-red-950/70 border-red-700 stale-order"
-            : "bg-[#0f0a1e]/80 border-purple-800/40"
+            ? "bg-red-950/70 border-red-500/70 shadow-lg shadow-red-950/30 stale-order"
+            : "bg-bar-surface border-bar-border shadow-lg shadow-black/10"
         }`}
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="font-bold text-lg text-amber-200 truncate">{order.guestName}</p>
+            <p className="font-bold text-lg text-bar-ink truncate">{order.guestName}</p>
             {order.guestTag && (
-              <p className="text-xs text-purple-400 mt-0.5">{order.guestTag}</p>
+              <p className="text-xs text-bar-muted mt-0.5">{order.guestTag}</p>
             )}
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setShowRecipe(true)}
-              className="p-1.5 rounded-lg text-purple-400 hover:text-amber-300 hover:bg-purple-800/40 transition-colors"
+              className="p-1.5 rounded-lg text-bar-muted hover:text-accent hover:bg-bar-soft transition-colors"
               title="Rezept anzeigen"
             >
               <BookOpen size={16} />
@@ -141,8 +141,8 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
 
         {/* Notes */}
         {order.notes && (
-          <div className="rounded-lg bg-amber-900/20 border border-amber-700/40 px-3 py-2">
-            <p className="text-sm text-amber-200">💬 {order.notes}</p>
+          <div className="rounded-lg bg-amber-500/10 border border-amber-400/20 px-3 py-2">
+            <p className="text-sm text-bar-ink">💬 {order.notes}</p>
           </div>
         )}
 
@@ -158,17 +158,17 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
                   className="w-12 h-12 rounded-lg object-cover shrink-0"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-purple-900/50 flex items-center justify-center text-xl shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-bar-soft flex items-center justify-center text-xl shrink-0">
                   🍹
                 </div>
               )}
               <div className="min-w-0">
-                <p className="text-sm font-medium text-white">
-                  <span className="text-amber-400 font-mono">×{item.quantity}</span>{" "}
+                <p className="text-sm font-medium text-bar-ink">
+                  <span className="text-accent font-mono">×{item.quantity}</span>{" "}
                   {item.cocktail.name}
                 </p>
                 {item.itemNote && (
-                  <p className="text-xs text-purple-400 italic mt-0.5">{item.itemNote}</p>
+                  <p className="text-xs text-bar-muted italic mt-0.5">{item.itemNote}</p>
                 )}
               </div>
             </li>
@@ -181,13 +181,13 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
             <>
               <button
                 onClick={() => handleStatus("in_progress")}
-                className="flex-1 py-2.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white font-semibold text-sm transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-bar-ink font-semibold text-sm transition-colors"
               >
                 Annehmen
               </button>
               <button
                 onClick={() => handleStatus("completed")}
-                className="px-3 py-2.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-sm transition-colors"
+                className="px-3 py-2.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-bar-ink text-sm transition-colors"
               >
                 Direkt fertig
               </button>
@@ -198,13 +198,13 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
             <>
               <button
                 onClick={() => handleStatus("ready")}
-                className="flex-1 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-sm transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-bar-ink font-semibold text-sm transition-colors"
               >
                 Fertig zur Abholung
               </button>
               <button
                 onClick={() => handleStatus("completed")}
-                className="px-3 py-2.5 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-white text-sm transition-colors"
+                className="px-3 py-2.5 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-bar-ink text-sm transition-colors"
               >
                 Direkt fertig
               </button>
@@ -215,7 +215,7 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
             <>
               <button
                 onClick={() => handleStatus("completed")}
-                className="flex-1 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-bar-ink font-semibold text-sm transition-colors"
               >
                 Ausgegeben ✓
               </button>
@@ -224,7 +224,7 @@ export function OrderCard({ order, onStatusChange, onCancel, isNew }: OrderCardP
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2.5 rounded-lg border border-purple-700/50 text-purple-400 hover:bg-purple-800/30 transition-colors">
+              <button className="p-2.5 rounded-lg border border-bar-border text-bar-muted hover:bg-bar-soft transition-colors">
                 <MoreVertical size={16} />
               </button>
             </DropdownMenuTrigger>

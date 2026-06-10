@@ -36,7 +36,7 @@ function HistoryTable({
   showCancelReason?: boolean;
 }) {
   if (orders.length === 0) {
-    return <p className="text-center text-purple-500 py-8 text-sm">Keine Einträge</p>;
+    return <p className="text-center text-bar-muted/70 py-8 text-sm">Keine Einträge</p>;
   }
 
   return (
@@ -44,30 +44,30 @@ function HistoryTable({
       {orders.map((order) => (
         <div
           key={order.id}
-          className="rounded-lg bg-black/20 border border-purple-800/30 p-3 space-y-1"
+          className="rounded-lg bg-bar-bg/50 border border-bar-border p-3 space-y-1"
         >
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <span className="font-medium text-amber-200 text-sm">{order.guestName}</span>
+              <span className="font-medium text-bar-ink text-sm">{order.guestName}</span>
               {order.guestTag && (
-                <span className="text-purple-400 text-xs ml-2">{order.guestTag}</span>
+                <span className="text-bar-muted text-xs ml-2">{order.guestTag}</span>
               )}
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs text-purple-500">
+              <span className="text-xs text-bar-muted/70">
                 {formatDuration(order.createdAt, order.completedAt ?? order.updatedAt)}
               </span>
               <button
                 onClick={() => onReopen(order.id)}
-                className="p-1.5 rounded-lg text-purple-400 hover:text-amber-300 hover:bg-purple-800/40 transition-colors"
+                className="p-1.5 rounded-lg text-bar-muted hover:text-accent hover:bg-bar-soft transition-colors"
                 title="Wieder öffnen"
               >
                 <RotateCcw size={14} />
               </button>
             </div>
           </div>
-          <p className="text-xs text-purple-300 truncate">{itemsSummary(order)}</p>
-          <p className="text-xs text-purple-500">
+          <p className="text-xs text-bar-muted truncate">{itemsSummary(order)}</p>
+          <p className="text-xs text-bar-muted/70">
             {new Date(order.createdAt).toLocaleTimeString("de-DE", {
               hour: "2-digit",
               minute: "2-digit",
@@ -112,10 +112,10 @@ export function HistoryDrawer({ open, onClose, onReopen }: HistoryDrawerProps) {
     <SheetContent open={open} onClose={onClose} side="right">
       <div className="p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-amber-300">Verlauf</h2>
+          <h2 className="text-lg font-bold text-accent">Verlauf</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-purple-400 hover:text-white hover:bg-purple-800/40 transition-colors"
+            className="p-2 rounded-lg text-bar-muted hover:text-white hover:bg-bar-soft transition-colors"
           >
             <X size={20} />
           </button>

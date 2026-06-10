@@ -16,7 +16,7 @@ export function SoundInitBanner() {
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer bg-amber-900/80 border border-amber-600 text-amber-200 text-sm px-4 py-2 text-center hover:bg-amber-800/80 transition-colors"
+      className="cursor-pointer bg-amber-900/80 border border-amber-600 text-bar-ink text-sm px-4 py-2 text-center hover:bg-amber-800/80 transition-colors"
     >
       🔔 Klicke hier, um Sound-Benachrichtigungen zu aktivieren
     </div>

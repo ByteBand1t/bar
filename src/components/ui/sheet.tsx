@@ -45,7 +45,7 @@ export function SheetContent({ open, onClose, children, side = "right" }: SheetC
         onClick={onClose}
       />
       <div
-        className={`fixed top-0 ${side === "right" ? "right-0" : "left-0"} h-full w-[480px] max-w-full bg-[#0f0a1e] border-l border-purple-800/50 z-50 overflow-y-auto shadow-2xl`}
+        className={`fixed top-0 ${side === "right" ? "right-0" : "left-0"} h-full w-[480px] max-w-full bg-bar-bg border-l border-bar-border z-50 overflow-y-auto shadow-2xl`}
       >
         {children}
       </div>

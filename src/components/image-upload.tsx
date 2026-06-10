@@ -116,7 +116,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           <img
             src={displaySrc}
             alt="Vorschau"
-            className="w-40 h-40 object-cover rounded-xl border border-purple-700/50"
+            className="w-40 h-40 object-cover rounded-xl border border-admin-border"
             width={value?.width ?? 160}
             height={value?.height ?? 160}
           />
@@ -130,7 +130,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={uploading}
-              className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-purple-800/40 hover:bg-purple-700/40 rounded-lg text-purple-200 transition-colors border border-purple-700/40"
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-admin-surface hover:bg-accent-soft rounded-lg text-admin-muted hover:text-accent transition-colors border border-admin-border"
             >
               <RefreshCw size={12} />
               Ersetzen
@@ -154,23 +154,23 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           onClick={() => !uploading && inputRef.current?.click()}
           className={`relative flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
             dragging
-              ? "border-amber-400 bg-amber-400/10"
-              : "border-purple-700/50 hover:border-purple-500/70 bg-black/20"
+              ? "border-accent bg-accent-soft"
+              : "border-admin-border hover:border-accent/50 bg-admin-surface"
           } ${uploading ? "pointer-events-none opacity-60" : ""}`}
         >
           {uploading ? (
             <div className="flex flex-col items-center gap-2">
-              <Upload size={24} className="text-purple-400 animate-pulse" />
-              <div className="w-32 h-1.5 bg-purple-900 rounded-full overflow-hidden">
+              <Upload size={24} className="text-accent animate-pulse" />
+              <div className="w-32 h-1.5 bg-admin-border rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-amber-400 transition-all duration-300"
+                  className="h-full bg-accent transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <span className="text-xs text-purple-400">Hochladen…</span>
+              <span className="text-xs text-admin-muted">Hochladen…</span>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-2 text-purple-500">
+            <div className="flex flex-col items-center gap-2 text-admin-muted">
               <ImageIcon size={28} />
               <span className="text-sm">Bild hierher ziehen oder klicken</span>
               <span className="text-xs">JPEG, PNG, WebP – max. 10 MB</span>

@@ -9,10 +9,10 @@ export default function NewCocktailPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <Link href="/admin" className="text-purple-400 hover:text-white transition-colors">
+        <Link href="/admin" className="text-admin-muted hover:text-accent transition-colors">
           <ChevronLeft size={20} />
         </Link>
-        <h1 className="text-xl font-bold text-white">Neuer Cocktail</h1>
+        <h1 className="text-2xl font-bold text-admin-ink">Neuer Cocktail</h1>
       </div>
       <CocktailForm />
     </div>

@@ -24,6 +24,23 @@
   --color-accent-fg: #ffffff;       /* text/icon on accent */
   --color-accent-soft: #fdeee9;     /* light coral tint for soft highlights */
 
+
+  /* Shared light admin theme — reuses guest surfaces and accent tokens. */
+  --color-admin-bg: var(--color-guest-bg);
+  --color-admin-surface: var(--color-guest-surface);
+  --color-admin-ink: var(--color-guest-ink);
+  --color-admin-muted: var(--color-guest-muted);
+  --color-admin-border: var(--color-guest-border);
+
+  /* Modern dark operational theme for bar, stats and projector screen. */
+  --color-bar-bg: #101114;
+  --color-bar-surface: #17191f;
+  --color-bar-surface-2: #1f222a;
+  --color-bar-border: #2b3038;
+  --color-bar-ink: #f4f6f8;
+  --color-bar-muted: #9aa4b2;
+  --color-bar-soft: #222832;
+
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -38,8 +55,8 @@ html {
 }
 
 body {
-  background-color: #0f0a1e;
-  color: #f0e6d3;
+  background-color: var(--color-guest-bg);
+  color: var(--color-guest-ink);
   font-family: system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
