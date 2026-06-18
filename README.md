@@ -249,3 +249,30 @@ kleinen Auth-Erweiterung prüfen):
 | `/api/auth/login` | Anmelden (POST) | – |
 | `/api/auth/logout` | Abmelden (POST) | – |
 | `/api/health` | Healthcheck (GET) | – |
+
+## Push-Benachrichtigungen (PWA/Web Push)
+
+Für native Browser-Pushs auf dem Bar-Handy werden einmalig VAPID-Keys benötigt:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+Trage die Werte anschließend in Portainer bzw. der Deployment-Umgebung ein. `NEXT_PUBLIC_VAPID_PUBLIC_KEY` muss denselben Wert wie `VAPID_PUBLIC_KEY` haben:
+
+```env
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
+VAPID_EMAIL=mailto:bar@franzi.app
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=
+```
+
+Nach dem Deployment auf `/bar` einloggen und „Push aktivieren“ drücken. Auf iPhones funktioniert Web Push ab iOS 16.4 nur, wenn die Seite vorher über Teilen → „Zum Home-Bildschirm“ als PWA hinzugefügt wurde. Android Chrome funktioniert direkt im Browser.
+
+### Einmalige Kategorie-Korrektur
+
+Falls alte Datenbankeinträge noch englische/kleingeschriebene Kategorien enthalten, führe nach dem Deployment einmalig aus:
+
+```bash
+docker compose exec app tsx scripts/fix-categories.ts
+```

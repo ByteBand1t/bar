@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CATEGORY_VALUES } from "@/lib/categories";
 
 export const IngredientSchema = z.object({
   name: z.string().min(1, "Name erforderlich"),
@@ -7,7 +8,7 @@ export const IngredientSchema = z.object({
 
 export const CocktailSchema = z.object({
   name: z.string().min(2, "Mind. 2 Zeichen").max(60, "Max. 60 Zeichen"),
-  category: z.enum(["Cocktail", "Longdrink", "Softdrink", "Bier", "Wein", "Shot"]),
+  category: z.enum(CATEGORY_VALUES),
   description: z.string().min(10, "Mind. 10 Zeichen").max(300, "Max. 300 Zeichen"),
   imageFilename: z.string().nullable().optional(),
   imageWidth: z.number().int().positive().nullable().optional(),

@@ -28,7 +28,7 @@ export default async function EditCocktailPage({
         id={id}
         defaultValues={{
           name: cocktail.name,
-          category: cocktail.category as "Cocktail" | "Longdrink" | "Softdrink" | "Bier" | "Wein" | "Shot",
+          category: cocktail.category,
           description: cocktail.description,
           imageFilename: cocktail.imageFilename,
           imageWidth: cocktail.imageWidth,

@@ -24,13 +24,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { Plus, X, GripVertical, Loader2, Save, ChevronUp, ChevronDown } from "lucide-react";
 import { ImageUpload } from "@/components/image-upload";
 import { CocktailSchema, type CocktailInput } from "@/lib/cocktail-schema";
+import { CATEGORIES, isCategory } from "@/lib/categories";
 import { CocktailCard } from "@/components/cocktail-card";
 
-const CATEGORIES = ["Cocktail", "Longdrink", "Softdrink", "Bier", "Wein", "Shot"] as const;
 
 interface CocktailFormProps {
   id?: string;
-  defaultValues?: Partial<CocktailInput & { imageFilename?: string | null; imageWidth?: number | null; imageHeight?: number | null }>;
+  defaultValues?: Partial<Omit<CocktailInput, "category"> & { category?: string; imageFilename?: string | null; imageWidth?: number | null; imageHeight?: number | null }>;
 }
 
 function SortableIngredientRow({
@@ -186,6 +186,8 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
   const router = useRouter();
   const isEdit = !!id;
 
+  const categoryDefault = isCategory(defaultValues?.category) ? defaultValues.category : "Cocktail";
+
   const {
     register,
     control,
@@ -196,7 +198,7 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
     resolver: zodResolver(CocktailSchema),
     defaultValues: {
       name: defaultValues?.name ?? "",
-      category: defaultValues?.category ?? "Cocktail",
+      category: categoryDefault,
       description: defaultValues?.description ?? "",
       imageFilename: defaultValues?.imageFilename ?? null,
       imageWidth: defaultValues?.imageWidth ?? null,
@@ -329,9 +331,9 @@ export function CocktailForm({ id, defaultValues }: CocktailFormProps) {
             <div>
               <label className={labelClass()}>Kategorie *</label>
               <select {...register("category")} className={inputClass(!!errors.category)}>
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c} className="bg-admin-surface">
-                    {c}
+                {CATEGORIES.map((category) => (
+                  <option key={category.value} value={category.value} className="bg-admin-surface">
+                    {category.label}
                   </option>
                 ))}
               </select>
