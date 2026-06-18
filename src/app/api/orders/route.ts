@@ -7,7 +7,6 @@ import type { OrderWithDetails } from "@/lib/event-bus";
 import { getBarState } from "@/lib/settings";
 import { getIdempotentOrder, rememberIdempotentOrder } from "@/lib/idempotency";
 import { log } from "@/lib/logger";
-import { sendPushToAll } from "@/lib/push";
 
 function getIp(req: NextRequest): string {
   return (
@@ -129,12 +128,6 @@ export async function POST(req: NextRequest) {
     if (idempotencyKey) rememberIdempotentOrder(idempotencyKey, order.id);
 
     eventBus.publish("order.created", order as OrderWithDetails);
-    const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-    void sendPushToAll(
-      "🍹 Neue Bestellung",
-      `${order.guestName} hat ${totalItems} ${totalItems === 1 ? "Getränk" : "Getränke"} bestellt`,
-      { url: "/bar", orderId: order.id }
-    ).catch((error) => log.error("push_send_failed", { orderId: order.id, err: String(error) }));
     log.info("order_created", {
       route: "/api/orders",
       status: 201,

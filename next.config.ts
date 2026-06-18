@@ -16,16 +16,9 @@ const csp = [
 const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
-  serverExternalPackages: ["sharp", "better-sqlite3", "archiver", "web-push"],
+  serverExternalPackages: ["sharp", "better-sqlite3", "archiver"],
   async headers() {
     return [
-      {
-        source: "/sw.js",
-        headers: [
-          { key: "Cache-Control", value: "no-cache" },
-          { key: "Service-Worker-Allowed", value: "/" },
-        ],
-      },
       {
         source: "/:path*",
         headers: [

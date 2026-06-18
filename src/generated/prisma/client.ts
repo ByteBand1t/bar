@@ -62,11 +62,6 @@ export type OrderItem = Prisma.OrderItemModel
  */
 export type BarSetting = Prisma.BarSettingModel
 /**
- * Model PushSubscription
- * 
- */
-export type PushSubscription = Prisma.PushSubscriptionModel
-/**
  * Model OrderEvent
  * 
  */

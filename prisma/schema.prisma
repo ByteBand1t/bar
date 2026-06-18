@@ -59,12 +59,6 @@ model BarSetting {
   updatedAt DateTime @updatedAt
 }
 
-model PushSubscription {
-  id        String   @id @default(cuid())
-  endpoint  String   @unique
-  keys      Json
-  createdAt DateTime @default(now())
-}
 
 model OrderEvent {
   id        String   @id @default(cuid())
