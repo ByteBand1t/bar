@@ -5,12 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: franzis-bar
     environment:
-      - DATABASE_URL=file:/data/app.db
-      - NODE_ENV=production
-      - SESSION_SECRET=${SESSION_SECRET}
-      - BAR_PIN=${BAR_PIN:-1234}
-      - ADMIN_PIN=${ADMIN_PIN:-9999}
-      - TRUST_PROXY=${TRUST_PROXY:-false}
+      DATABASE_URL: file:/data/app.db
+      NODE_ENV: production
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET is required (set in Portainer environment variables)}
+      BAR_PIN: ${BAR_PIN:-1234}
+      ADMIN_PIN: ${ADMIN_PIN:-9999}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
     ports:
       - "${HOST_PORT:-3000}:3000"
     volumes:
@@ -22,5 +24,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 40s
+
 volumes:
   bar_data:
