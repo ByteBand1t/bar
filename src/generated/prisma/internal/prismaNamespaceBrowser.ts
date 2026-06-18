@@ -55,7 +55,6 @@ export const ModelName = {
   Order: 'Order',
   OrderItem: 'OrderItem',
   BarSetting: 'BarSetting',
-  PushSubscription: 'PushSubscription',
   OrderEvent: 'OrderEvent'
 } as const
 
@@ -127,16 +126,6 @@ export const BarSettingScalarFieldEnum = {
 } as const
 
 export type BarSettingScalarFieldEnum = (typeof BarSettingScalarFieldEnum)[keyof typeof BarSettingScalarFieldEnum]
-
-
-export const PushSubscriptionScalarFieldEnum = {
-  id: 'id',
-  endpoint: 'endpoint',
-  keys: 'keys',
-  createdAt: 'createdAt'
-} as const
-
-export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
 
 
 export const OrderEventScalarFieldEnum = {

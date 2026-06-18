@@ -388,7 +388,6 @@ export const ModelName = {
   Order: 'Order',
   OrderItem: 'OrderItem',
   BarSetting: 'BarSetting',
-  PushSubscription: 'PushSubscription',
   OrderEvent: 'OrderEvent'
 } as const
 
@@ -405,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cocktail" | "order" | "orderItem" | "barSetting" | "pushSubscription" | "orderEvent"
+    modelProps: "cocktail" | "order" | "orderItem" | "barSetting" | "orderEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -705,80 +704,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    PushSubscription: {
-      payload: Prisma.$PushSubscriptionPayload<ExtArgs>
-      fields: Prisma.PushSubscriptionFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        findFirst: {
-          args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        findMany: {
-          args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
-        }
-        create: {
-          args: Prisma.PushSubscriptionCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        createMany: {
-          args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PushSubscriptionCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
-        }
-        delete: {
-          args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        update: {
-          args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        deleteMany: {
-          args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PushSubscriptionUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[]
-        }
-        upsert: {
-          args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>
-        }
-        aggregate: {
-          args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePushSubscription>
-        }
-        groupBy: {
-          args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PushSubscriptionCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionCountAggregateOutputType> | number
-        }
-      }
-    }
     OrderEvent: {
       payload: Prisma.$OrderEventPayload<ExtArgs>
       fields: Prisma.OrderEventFieldRefs
@@ -944,16 +869,6 @@ export const BarSettingScalarFieldEnum = {
 } as const
 
 export type BarSettingScalarFieldEnum = (typeof BarSettingScalarFieldEnum)[keyof typeof BarSettingScalarFieldEnum]
-
-
-export const PushSubscriptionScalarFieldEnum = {
-  id: 'id',
-  endpoint: 'endpoint',
-  keys: 'keys',
-  createdAt: 'createdAt'
-} as const
-
-export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
 
 
 export const OrderEventScalarFieldEnum = {
@@ -1186,7 +1101,6 @@ export type GlobalOmitConfig = {
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
   barSetting?: Prisma.BarSettingOmit
-  pushSubscription?: Prisma.PushSubscriptionOmit
   orderEvent?: Prisma.OrderEventOmit
 }
 
