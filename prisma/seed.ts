@@ -11,7 +11,7 @@ const cocktails = [
     description:
       "Der Klassiker aus Kuba – frische Minze, spritzige Limette und ein Hauch Rum. Erfrischend und belebend.",
     imageFilename: "placeholder-mojito.png",
-    category: "cocktail",
+    category: "Cocktail",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 1,
@@ -38,7 +38,7 @@ const cocktails = [
     description:
       "Der unverwechselbare italienische Sommerdrink. Bitter-süß, spritzig und wunderschön orange.",
     imageFilename: "placeholder-aperol.png",
-    category: "longdrink",
+    category: "Longdrink",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 2,
@@ -63,7 +63,7 @@ const cocktails = [
     description:
       "Zeitlos elegant: hochwertiger Gin trifft auf Tonic Water. Herb, frisch und unglaublich vielseitig.",
     imageFilename: "placeholder-gintonic.png",
-    category: "longdrink",
+    category: "Longdrink",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 3,
@@ -87,7 +87,7 @@ const cocktails = [
     description:
       "Der Ingwer-Kick! Vodka und Ingwerbier im Kupferbecher serviert – scharf, frisch und unvergesslich.",
     imageFilename: "placeholder-mule.png",
-    category: "longdrink",
+    category: "Longdrink",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 4,
@@ -111,7 +111,7 @@ const cocktails = [
     description:
       "Hausgemachte Limonade mit frischen Früchten, Minze und Sodawasser. Für alle, die frisch und alkoholfrei feiern möchten.",
     imageFilename: "placeholder-limo.png",
-    category: "softdrink",
+    category: "Softdrink",
     isAlcoholFree: true,
     isAvailable: true,
     sortOrder: 5,
@@ -137,7 +137,7 @@ const cocktails = [
     description:
       "Ein frisch gezapftes Bier – oder kalt aus der Flasche. Der ehrlichste Durst-Löscher der Party.",
     imageFilename: "placeholder-bier.png",
-    category: "beer",
+    category: "Bier",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 6,
@@ -150,7 +150,7 @@ const cocktails = [
     description:
       "Trockener, fruchtiger Roséwein – leicht gekühlt serviert. Elegant und unaufgeregt.",
     imageFilename: "placeholder-wein.png",
-    category: "wine",
+    category: "Wein",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 7,
@@ -163,7 +163,7 @@ const cocktails = [
     description:
       "Der klassische Shot mit Salz und Limette. Für alle, die das Tanzbein schwingen wollen.",
     imageFilename: "placeholder-shot.png",
-    category: "shot",
+    category: "Shot",
     isAlcoholFree: false,
     isAvailable: true,
     sortOrder: 8,

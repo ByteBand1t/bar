@@ -8,6 +8,7 @@ import { HistoryDrawer } from "@/components/bar/history-drawer";
 import { PauseControl } from "@/components/bar/pause-control";
 import { AvailabilityDrawer } from "@/components/bar/availability-drawer";
 import { SoundInitBanner } from "@/components/bar/sound-init-banner";
+import { PushToggle } from "@/components/bar/push-toggle";
 import { Toaster } from "@/components/ui/toast";
 import {
   isSoundEnabled,
@@ -289,6 +290,7 @@ export function BarDashboard() {
 
           <div className="flex items-center gap-3 ml-auto">
             <LastActivity lastEventAt={lastEventAt} />
+            <PushToggle />
             <PauseControl barState={barState} />
             <ConnectionLed state={connectionState} />
 

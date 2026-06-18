@@ -5,23 +5,20 @@ import { CartFab } from "@/components/cart-fab";
 import { Toaster } from "@/components/ui/toast";
 import { FilterChips } from "@/components/filter-chips";
 import { GuestLive } from "@/components/guest-live";
+import { CATEGORIES } from "@/lib/categories";
 import type { Cocktail } from "@/types/cocktail";
 
 export const dynamic = "force-dynamic";
 
-const CATEGORIES = [
+const FILTER_CATEGORIES = [
   { value: "all", label: "Alle" },
-  { value: "cocktail", label: "Cocktails" },
-  { value: "longdrink", label: "Longdrinks" },
-  { value: "softdrink", label: "Softdrinks" },
-  { value: "beer", label: "Bier" },
-  { value: "wine", label: "Wein" },
-  { value: "shot", label: "Shots" },
+  ...CATEGORIES,
   { value: "alcoholfree", label: "Alkoholfrei" },
 ];
 
 async function getCocktails(): Promise<Cocktail[]> {
   const cocktails = await db.cocktail.findMany({
+    where: { isAvailable: true, isArchived: false },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
   });
   return cocktails.map((c) => ({
@@ -63,7 +60,7 @@ export default async function HomePage({
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pb-28">
-        <FilterChips categories={CATEGORIES} active={category} />
+        <FilterChips categories={FILTER_CATEGORIES} active={category} />
 
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-guest-muted">

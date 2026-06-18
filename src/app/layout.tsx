@@ -5,6 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Franzis Geburtstags-Bar",
   description: "Bestell dir deinen Cocktail direkt an der Bar!",
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
